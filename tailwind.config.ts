@@ -5,7 +5,7 @@ export default {
     extend: {
       colors: {
         void: "#04060d", panel: "#0a0f1e",
-        ink: "#e8edf7", dim: "#8b96ad",
+        ink: "#e8edf7", dim: "#9aa6bd",
         cyan: "#4be1ff", violet: "#9d6bff", amber: "#ffb454", rose: "#ff5c8a",
       },
       fontFamily: {

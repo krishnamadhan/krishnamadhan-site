@@ -26,8 +26,8 @@ body {
 .grid-floor {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background-image:
-    linear-gradient(rgba(75,225,255,.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(75,225,255,.05) 1px, transparent 1px);
+    linear-gradient(rgba(75,225,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(75,225,255,.03) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse 90% 60% at 50% 45%, black 30%, transparent 75%);
   animation: gridDrift 24s linear infinite;
@@ -96,4 +96,47 @@ body {
 .skip-link:focus { top: 12px; }
 a:focus-visible, button:focus-visible {
   outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px;
+}
+
+/* ── Krishna OS lab-interface system ── */
+.chamber {
+  position: relative;
+  border: 1px solid rgba(120,150,255,.18);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(75,225,255,.07), transparent 60%),
+    rgba(10,15,30,.4);
+  overflow: hidden;
+}
+.chamber::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(75,225,255,.014) 3px 4px);
+}
+.module-label {
+  font-family: ui-monospace, monospace;
+  font-size: 9px; letter-spacing: .28em; text-transform: uppercase;
+  color: rgba(75,225,255,.75);
+}
+.coord { font-family: ui-monospace, monospace; font-size: 9px; letter-spacing: .2em; color: rgba(139,150,173,.5); }
+.hairline { height: 1px; background: rgba(120,150,255,.14); }
+
+/* systems-map connector */
+.map-line { stroke: rgba(75,225,255,.35); stroke-width: 1; stroke-dasharray: 5 6; animation: dashFlow 2.6s linear infinite; }
+@keyframes dashFlow { to { stroke-dashoffset: -22; } }
+
+/* timeline progress beam + scanline */
+.scanline { position: relative; overflow: hidden; }
+.scanline::after {
+  content: ""; position: absolute; inset-inline: 0; height: 90px; top: -90px;
+  background: linear-gradient(180deg, transparent, rgba(75,225,255,.05), transparent);
+  animation: scan 7s linear infinite;
+}
+@keyframes scan { to { top: 110%; } }
+
+/* warm field-log tint */
+.field { --warm: 255,180,84; }
+.field .module-label { color: rgba(var(--warm), .8); }
+
+@media (prefers-reduced-motion: reduce) {
+  .map-line, .scanline::after { animation: none !important; }
 }

@@ -21,12 +21,16 @@ export function Reveal({
   );
 }
 
-/* ── numbered section heading with beam ── */
-export function SectionHeading({ idx, children }: { idx: string; children: React.ReactNode }) {
+/* ── numbered section heading with module label ── */
+export function SectionHeading({
+  idx, label, accent = "cyan", children,
+}: { idx: string; label?: string; accent?: "cyan" | "amber"; children: React.ReactNode }) {
+  const c = accent === "amber" ? "text-amber" : "text-cyan";
   return (
     <Reveal>
-      <h2 className="font-display text-3xl md:text-5xl font-bold flex items-center gap-4 mb-12">
-        <span className="text-cyan text-sm tracking-[0.3em] font-normal">{idx}</span>
+      {label && <p className={`module-label mb-3 ${accent === "amber" ? "!text-amber/70" : ""}`}>{label}</p>}
+      <h2 className="font-display text-4xl md:text-6xl font-bold flex items-center gap-5 mb-12 tracking-tight">
+        <span className={`${c} text-sm tracking-[0.3em] font-normal`}>{idx}</span>
         {children}
         <span className="beam flex-1" />
       </h2>
@@ -148,5 +152,104 @@ export function TiltCard({ children, className = "" }: { children: React.ReactNo
     >
       {children}
     </motion.div>
+  );
+}
+
+/* ── Lenis smooth scroll (respects reduced motion) ── */
+export function SmoothScroll() {
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let lenis: { raf: (t: number) => void; destroy: () => void } | undefined;
+    let raf = 0;
+    import("lenis").then(({ default: Lenis }) => {
+      lenis = new Lenis({ duration: 1.05, smoothWheel: true });
+      const loop = (time: number) => { lenis!.raf(time); raf = requestAnimationFrame(loop); };
+      raf = requestAnimationFrame(loop);
+    });
+    return () => { cancelAnimationFrame(raf); lenis?.destroy(); };
+  }, []);
+  return null;
+}
+
+/* ── ⌘K command palette ── */
+const PALETTE = [
+  { label: "Go: About", href: "#about" },
+  { label: "Go: Systems Map", href: "#work" },
+  { label: "Go: Lab Modules", href: "#projects" },
+  { label: "Go: Trajectory", href: "#timeline" },
+  { label: "Go: Stack", href: "#skills" },
+  { label: "Go: Field Log", href: "#offduty" },
+  { label: "Go: Contact", href: "#contact" },
+  { label: "Action: Say hello (email)", href: "mailto:hello@krishnamadhan.com" },
+  { label: "Action: Back to top", href: "#top" },
+];
+
+export function CommandPalette() {
+  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const [sel, setSel] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const hits = PALETTE.filter((p) => p.label.toLowerCase().includes(q.toLowerCase()));
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault(); setOpen((o) => !o); setQ(""); setSel(0);
+      } else if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+  useEffect(() => { if (open) inputRef.current?.focus(); }, [open]);
+
+  const go = (href: string) => {
+    setOpen(false);
+    if (href.startsWith("#")) document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    else window.location.href = href;
+  };
+
+  if (!open) return (
+    <button
+      onClick={() => setOpen(true)}
+      className="fixed bottom-5 left-5 z-50 hidden md:flex items-center gap-2 glass rounded-full px-4 py-2 text-[11px] text-dim hover:text-cyan hover:border-cyan/40 transition-colors"
+      aria-label="Open command palette"
+    >
+      <span className="font-mono">⌘K</span> command
+    </button>
+  );
+
+  return (
+    <div className="fixed inset-0 z-[70] grid place-items-start justify-center pt-[18vh] bg-void/70 backdrop-blur-sm"
+         onClick={() => setOpen(false)} role="dialog" aria-modal="true" aria-label="Command palette">
+      <div className="w-[min(560px,92vw)] glass rounded-2xl overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        <input
+          ref={inputRef} value={q}
+          onChange={(e) => { setQ(e.target.value); setSel(0); }}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowDown") { e.preventDefault(); setSel((s) => Math.min(s + 1, hits.length - 1)); }
+            if (e.key === "ArrowUp") { e.preventDefault(); setSel((s) => Math.max(s - 1, 0)); }
+            if (e.key === "Enter" && hits[sel]) go(hits[sel].href);
+          }}
+          placeholder="Type a command or section…"
+          className="w-full bg-transparent px-5 py-4 text-ink placeholder:text-dim/60 outline-none border-b border-white/10"
+        />
+        <ul className="max-h-72 overflow-y-auto py-2" role="listbox">
+          {hits.map((h, i) => (
+            <li key={h.label} role="option" aria-selected={i === sel}>
+              <button
+                onClick={() => go(h.href)} onMouseEnter={() => setSel(i)}
+                className={`w-full text-left px-5 py-2.5 text-sm transition-colors ${i === sel ? "bg-cyan/10 text-cyan" : "text-dim"}`}
+              >
+                {h.label}
+              </button>
+            </li>
+          ))}
+          {!hits.length && <li className="px-5 py-3 text-sm text-dim/60">No matches.</li>}
+        </ul>
+        <div className="px-5 py-2.5 border-t border-white/10 font-mono text-[9px] tracking-[0.2em] text-dim/50 uppercase">
+          ↑↓ navigate · ↵ go · esc close
+        </div>
+      </div>
+    </div>
   );
 }
