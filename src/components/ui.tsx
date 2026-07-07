@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { CHAPTERS, sceneStore } from "@/lib/sceneChapters";
 
 /* ── section reveal wrapper ── */
 export function Reveal({
@@ -250,6 +251,48 @@ export function CommandPalette() {
           ↑↓ navigate · ↵ go · esc close
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ── kinetic masked text reveal (words) ── */
+export function KineticText({ children, className = "", delay = 0 }:
+  { children: string; className?: string; delay?: number }) {
+  const reduced = useReducedMotion();
+  if (reduced) return <span className={className}>{children}</span>;
+  return (
+    <span className={className} aria-label={children}>
+      {children.split(" ").map((w, i) => (
+        <span key={i} className="inline-block overflow-hidden pb-[0.08em] -mb-[0.08em]" aria-hidden>
+          <motion.span
+            className="inline-block"
+            initial={{ y: "110%" }}
+            whileInView={{ y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: delay + i * 0.06, ease: [0.2, 0.8, 0.2, 1] }}
+          >
+            {w}
+          </motion.span>
+          {i < children.split(" ").length - 1 ? "\u00A0" : ""}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/* ── chapter HUD: live readout of the scene state ── */
+export function ChapterHUD() {
+  const [label, setLabel] = useState(CHAPTERS[0].label);
+  useEffect(() => {
+    const fn = () => setLabel(CHAPTERS[sceneStore.chapterIndex].label);
+    sceneStore.listeners.add(fn);
+    return () => { sceneStore.listeners.delete(fn); };
+  }, []);
+  return (
+    <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden lg:block pointer-events-none">
+      <span className="module-label bg-void/60 border border-white/10 rounded-full px-4 py-1.5 backdrop-blur-sm">
+        {label}
+      </span>
     </div>
   );
 }

@@ -2,12 +2,10 @@
 
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import dynamic from "next/dynamic";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { profile } from "@/content/profile";
-import { Magnetic, Reveal, SectionHeading, TiltCard } from "./ui";
-
-const Scene = dynamic(() => import("./Scene"), { ssr: false });
+import { KineticText, Magnetic, Reveal, SectionHeading, TiltCard } from "./ui";
+import { sceneStore } from "@/lib/sceneChapters";
 
 const ACCENT: Record<string, string> = {
   cyan: "bg-cyan", violet: "bg-violet", amber: "bg-amber", rose: "bg-rose",
@@ -21,17 +19,38 @@ const NAV_LINKS = ["About", "Work", "Projects", "Timeline", "Skills", "Contact"]
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("about");
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (es) => es.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); }),
+      { rootMargin: "-40% 0px -55% 0px" }
+    );
+    NAV_LINKS.forEach((l) => {
+      const el = document.getElementById(l.toLowerCase());
+      if (el) obs.observe(el);
+    });
+    return () => obs.disconnect();
+  }, []);
   return (
     <nav className="fixed top-0 inset-x-0 z-40 flex items-center justify-between px-[4vw] py-4 bg-gradient-to-b from-void/90 to-transparent backdrop-blur-sm">
       <a href="#top" className="font-display font-bold tracking-[0.25em] text-sm text-cyan">
         KM<span className="text-ink">·</span>OS
       </a>
       <ul className="hidden md:flex gap-8 text-[11px] tracking-[0.2em] uppercase">
-        {NAV_LINKS.map((l) => (
-          <li key={l}>
-            <a href={`#${l.toLowerCase()}`} className="text-dim hover:text-cyan transition-colors">{l}</a>
-          </li>
-        ))}
+        {NAV_LINKS.map((l) => {
+          const isActive = active === l.toLowerCase();
+          return (
+            <li key={l} className="relative">
+              <a href={`#${l.toLowerCase()}`}
+                 className={`transition-colors ${isActive ? "text-cyan" : "text-dim hover:text-cyan"}`}>{l}</a>
+              {isActive && (
+                <motion.span layoutId="nav-glide"
+                  className="absolute -bottom-1.5 left-0 right-0 h-px bg-cyan shadow-[0_0_8px_rgba(75,225,255,.8)]"
+                  transition={{ type: "spring", stiffness: 350, damping: 30 }} />
+              )}
+            </li>
+          );
+        })}
       </ul>
       <button
         aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open}
@@ -85,7 +104,8 @@ export function Hero() {
             {...fade(0.2)}
             className="font-display font-extrabold leading-[0.98] text-[clamp(3.2rem,7.5vw,6.2rem)]"
           >
-            Krishna<br /><span className="grad-text">Madhan</span>
+            <KineticText delay={0.15}>Krishna</KineticText><br />
+            <span className="grad-text"><KineticText delay={0.3}>Madhan</KineticText></span>
           </motion.h1>
           <motion.p {...fade(0.4)} className="mt-6 max-w-xl text-dim text-lg md:text-xl leading-relaxed">
             {profile.subheadline}
@@ -104,10 +124,9 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* right: the KM Lab Engine in its chamber */}
-        <motion.div {...fade(0.5)} className="relative">
-          <div className="chamber aspect-square max-w-[480px] mx-auto">
-            <Scene />
+        {/* right: holographic chamber frame — the persistent Lab object lives here in CH.01 */}
+        <motion.div {...fade(0.5)} className="relative hidden lg:block">
+          <div className="chamber aspect-square max-w-[480px] mx-auto !bg-transparent">
             {HUD_LABELS.map((h) => (
               <span key={h.t} className={`absolute ${h.pos} module-label bg-void/60 rounded px-2 py-1 backdrop-blur-sm border border-white/5`}>
                 {h.t}
@@ -117,9 +136,10 @@ export function Hero() {
           </div>
         </motion.div>
       </div>
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-dim/60 text-[10px] tracking-[0.3em] uppercase animate-pulse">
-        scroll
-        <span className="block w-px h-8 mx-auto mt-2 bg-gradient-to-b from-cyan to-transparent" />
+      <div className="absolute bottom-0 inset-x-[6vw] hidden md:flex items-center justify-between border-t border-white/5 py-3">
+        <span className="coord">LAB STATUS · ALL SYSTEMS NOMINAL</span>
+        <span className="coord animate-pulse">SCROLL TO EXPLORE ↓</span>
+        <span className="coord">KM.OS ACTIVE · SYS.ONLINE</span>
       </div>
     </section>
   );
@@ -223,11 +243,13 @@ export function Projects() {
         <div className="grid md:grid-cols-2 gap-6">
           {profile.projects.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.08}>
+              <div onPointerEnter={() => { sceneStore.hotModule = i; }}
+                   onPointerLeave={() => { sceneStore.hotModule = -1; }}>
               <TiltCard
                 className={`relative overflow-hidden rounded-2xl p-8 h-full group border transition-colors
                   ${p.featured
-                    ? "border-white/20 bg-gradient-to-br from-panel/90 to-panel/50 backdrop-blur-xl"
-                    : "border-white/10 bg-panel/50 backdrop-blur-sm"}`}
+                    ? "border-white/20 bg-gradient-to-br from-panel to-panel/80 backdrop-blur-xl"
+                    : "border-white/10 bg-panel/80 backdrop-blur-sm"}`}
               >
                 {p.featured && (
                   <div className={`absolute -top-16 -right-16 w-44 h-44 rounded-full blur-3xl opacity-30 ${ACCENT[p.accent]}`} />
@@ -259,6 +281,7 @@ export function Projects() {
                   {p.featured ? "Flagship module →" : "Case study soon →"}
                 </span>
               </TiltCard>
+              </div>
             </Reveal>
           ))}
         </div>
@@ -358,10 +381,14 @@ export function OffDuty() {
         <Reveal>
           <div className="group relative overflow-hidden rounded-3xl border border-amber/20 mb-6 grid md:grid-cols-2 bg-panel/50">
             <div className="relative min-h-[320px] md:min-h-[440px] overflow-hidden">
-              <Image
-                src={life.cricket.img} alt={life.cricket.title} fill sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover group-hover:scale-[1.04] transition-transform duration-1000"
-              />
+              <motion.div className="absolute -inset-y-8 inset-x-0"
+                initial={{ y: 20 }} whileInView={{ y: -20 }}
+                viewport={{ amount: 0.2 }} transition={{ duration: 1.4, ease: "linear" }}>
+                <Image
+                  src={life.cricket.img} alt={life.cricket.title} fill sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover group-hover:scale-[1.04] transition-transform duration-1000"
+                />
+              </motion.div>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent md:to-panel/95 to-transparent" />
               <span className="absolute top-4 left-4 module-label bg-void/60 rounded px-2.5 py-1.5 backdrop-blur-sm border border-amber/30">
                 {life.cricket.tag}
@@ -454,7 +481,7 @@ export function Contact() {
                 </a>
               ))}
             </div>
-            <p className="coord mt-8">CHANNEL.OPEN · RESPONSE.T+24H</p>
+            <p className="coord mt-8">SIGNAL READY · CHANNEL.OPEN · RESPONSE.T+24H</p>
           </div>
         </Reveal>
       </div>
