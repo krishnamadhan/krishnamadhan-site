@@ -37,7 +37,7 @@ function Core() {
     g.position.y = Math.sin(performance.now() / 1600) * 0.12;
 
     /* scroll morph: shell breathes open, inner orb counter-spins */
-    const scale = 1 + s * 0.25;
+    const scale = 1 - s * 0.35;   // shrink as content takes over
     g.scale.setScalar(scale);
     inner.current.rotation.y -= dt * 0.5 + s * 0.02;
 
@@ -64,7 +64,7 @@ function Core() {
       <mesh ref={inner}>
         <icosahedronGeometry args={[1.0, 2]} />
         <meshStandardMaterial
-          color="#0a0f1e" emissive="#4be1ff" emissiveIntensity={1.6}
+          color="#0a0f1e" emissive="#4be1ff" emissiveIntensity={1.05}
           roughness={0.25} metalness={0.9} flatShading
         />
       </mesh>
@@ -117,13 +117,14 @@ function Rig() {
   useFrame(({ camera }) => {
     camera.position.x += (state.mx * 0.6 - camera.position.x) * 0.04;
     camera.position.y += (-state.my * 0.5 - camera.position.y) * 0.04;
-    camera.position.z = 6.6 - state.scroll * 1.2;
+    camera.position.z = 6.6 + state.scroll * 2.4;
     camera.lookAt(0, 0, 0);
   });
   return null;
 }
 
 export default function Scene() {
+  const wrapRef = useRef<HTMLDivElement>(null);
   const [ok, setOk] = useState(true);
   const [reduced, setReduced] = useState(false);
 
@@ -141,6 +142,12 @@ export default function Scene() {
     const onScroll = () => {
       const max = document.body.scrollHeight - window.innerHeight;
       state.scroll = max > 0 ? window.scrollY / max : 0;
+      // fade the whole scene outside the hero so it never fights content
+      if (wrapRef.current) {
+        const s = state.scroll;
+        const o = s < 0.08 ? 1 : s > 0.92 ? 0.45 : Math.max(0.16, 1 - (s - 0.08) * 4);
+        wrapRef.current.style.opacity = String(o);
+      }
     };
     const onMove = (e: PointerEvent) => {
       state.mx = e.clientX / window.innerWidth - 0.5;
@@ -172,7 +179,7 @@ export default function Scene() {
   }
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden>
+    <div ref={wrapRef} className="fixed inset-0 z-0 pointer-events-none transition-opacity duration-700" aria-hidden>
       <Canvas
         camera={{ position: [0, 0, 6.6], fov: 50 }}
         dpr={[1, 1.75]}
