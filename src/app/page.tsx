@@ -19,7 +19,6 @@ export default function Home() {
         <KeywordStrip />
         <About />
         <Work />
-        <KeywordStrip />
         <Projects />
         <Timeline />
         <Skills />

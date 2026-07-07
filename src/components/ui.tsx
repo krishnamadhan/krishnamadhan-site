@@ -75,7 +75,10 @@ export function ScrollHUD() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 26 });
   const [pct, setPct] = useState(0);
-  useEffect(() => scrollYProgress.on("change", (v) => setPct(Math.round(v * 100))), [scrollYProgress]);
+  useEffect(() => {
+    const unsub = scrollYProgress.on("change", (v) => setPct(Math.round(v * 100)));
+    return () => unsub();
+  }, [scrollYProgress]);
   return (
     <>
       <motion.div

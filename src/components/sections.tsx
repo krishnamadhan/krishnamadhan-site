@@ -1,6 +1,8 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
+import { useState } from "react";
 import { profile } from "@/content/profile";
 import { Magnetic, Marquee, Reveal, SectionHeading, TiltCard } from "./ui";
 
@@ -8,20 +10,42 @@ const ACCENT: Record<string, string> = {
   cyan: "bg-cyan", violet: "bg-violet", amber: "bg-amber", rose: "bg-rose",
 };
 
-/* ── nav ── */
+/* ── nav (desktop links + real mobile panel) ── */
+const NAV_LINKS = ["About", "Work", "Projects", "Timeline", "Skills", "Contact"];
+
 export function Nav() {
+  const [open, setOpen] = useState(false);
   return (
     <nav className="fixed top-0 inset-x-0 z-40 flex items-center justify-between px-[4vw] py-4 bg-gradient-to-b from-void/90 to-transparent backdrop-blur-sm">
       <a href="#top" className="font-display font-bold tracking-[0.25em] text-sm text-cyan">
         KM<span className="text-ink">·</span>LAB
       </a>
       <ul className="hidden md:flex gap-8 text-[11px] tracking-[0.2em] uppercase">
-        {["About", "Work", "Projects", "Timeline", "Skills", "Contact"].map((l) => (
+        {NAV_LINKS.map((l) => (
           <li key={l}>
             <a href={`#${l.toLowerCase()}`} className="text-dim hover:text-cyan transition-colors">{l}</a>
           </li>
         ))}
       </ul>
+      <button
+        aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open}
+        onClick={() => setOpen(!open)}
+        className="md:hidden relative w-9 h-9 grid place-items-center rounded-lg glass"
+      >
+        <span className={`block w-4 h-px bg-cyan transition-transform ${open ? "rotate-45 translate-y-[1px]" : "-translate-y-1"}`} />
+        <span className={`block w-4 h-px bg-cyan transition-opacity absolute ${open ? "opacity-0" : ""}`} />
+        <span className={`block w-4 h-px bg-cyan transition-transform ${open ? "-rotate-45 -translate-y-[1px]" : "translate-y-1"}`} />
+      </button>
+      {open && (
+        <div className="md:hidden absolute top-full inset-x-3 mt-1 glass rounded-2xl p-4 grid gap-1">
+          {NAV_LINKS.map((l) => (
+            <a key={l} href={`#${l.toLowerCase()}`} onClick={() => setOpen(false)}
+               className="px-4 py-3 rounded-xl text-sm tracking-[0.15em] uppercase text-dim hover:text-cyan hover:bg-white/5 transition-colors">
+              {l}
+            </a>
+          ))}
+        </div>
+      )}
     </nav>
   );
 }
@@ -81,10 +105,9 @@ export function About() {
           <Reveal delay={0.2}>
             <div className="glass relative overflow-hidden rounded-2xl aspect-[4/5] group">
               <div className="absolute -inset-[40%] bg-[conic-gradient(from_0deg,transparent_70%,rgba(75,225,255,.3),transparent_78%)] animate-spin-slow z-10 pointer-events-none" />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/photos/portrait.webp" alt="Krishna Madhan"
-                className="absolute inset-[3px] w-[calc(100%-6px)] h-[calc(100%-6px)] object-cover rounded-2xl grayscale-[0.15] group-hover:grayscale-0 group-hover:scale-[1.03] transition-all duration-700"
+              <Image
+                src="/photos/portrait.webp" alt="Krishna Madhan" fill sizes="(max-width: 820px) 90vw, 400px"
+                className="!absolute !inset-[3px] !w-[calc(100%-6px)] !h-[calc(100%-6px)] object-cover rounded-2xl grayscale-[0.15] group-hover:grayscale-0 group-hover:scale-[1.03] transition-all duration-700"
               />
               <span className="absolute bottom-3 left-4 z-20 font-mono text-[9px] tracking-[0.3em] uppercase text-cyan/80">
                 ID.VERIFIED · BLR
@@ -223,10 +246,9 @@ export function OffDuty() {
         <Reveal>
           <div className="group relative overflow-hidden rounded-3xl border border-white/10 mb-6 grid md:grid-cols-2 glass">
             <div className="relative min-h-[320px] md:min-h-[440px] overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={life.cricket.img} alt={life.cricket.title} loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-1000"
+              <Image
+                src={life.cricket.img} alt={life.cricket.title} fill sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover group-hover:scale-[1.05] transition-transform duration-1000"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-transparent md:to-panel/95 to-transparent" />
               <span className="absolute top-4 left-4 font-mono text-[9px] tracking-[0.3em] text-amber bg-void/60 rounded px-2.5 py-1.5 backdrop-blur-sm border border-amber/30">
@@ -253,11 +275,12 @@ export function OffDuty() {
           {life.tiles.map((s, i) => (
             <Reveal key={s.img} delay={i * 0.1}>
               <div className="group relative overflow-hidden rounded-2xl border border-white/10">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={s.img} alt={s.title} loading="lazy"
-                  className="w-full aspect-[3/4] object-cover grayscale-[0.15] group-hover:grayscale-0 group-hover:scale-[1.07] transition-all duration-700"
-                />
+                <div className="relative w-full aspect-[3/4]">
+                  <Image
+                    src={s.img} alt={s.title} fill sizes="(max-width: 640px) 100vw, 33vw"
+                    className="object-cover grayscale-[0.15] group-hover:grayscale-0 group-hover:scale-[1.07] transition-all duration-700"
+                  />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-void/95 via-void/20 to-transparent" />
                 <span className="absolute top-3 left-3 font-mono text-[8px] tracking-[0.25em] text-cyan/90 bg-void/50 rounded px-2 py-1 backdrop-blur-sm">
                   {s.tag}
