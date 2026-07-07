@@ -130,7 +130,7 @@ function LabObject({ wrap }: { wrap: React.RefObject<HTMLDivElement> }) {
       {/* glass chamber shell — faint fresnel-ish skin */}
       <mesh>
         <sphereGeometry args={[2.9, 32, 32]} />
-        <meshBasicMaterial color="#9d6bff" transparent opacity={0.035} side={2} />
+        <meshBasicMaterial color="#9d6bff" transparent opacity={0.02} side={2} />
       </mesh>
       {Array.from({ length: 6 }).map((_, i) => (
         <mesh key={`m${i}`} ref={(el) => { if (el) modules.current[i] = el; }}>
