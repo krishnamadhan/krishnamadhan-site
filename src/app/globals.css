@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cyan: #4be1ff;
+  --violet: #9d6bff;
+  --rose: #ff5c8a;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  @apply bg-void text-ink font-body antialiased;
+  overflow-x: hidden;
+}
+::selection { background: var(--violet); color: #fff; }
+
+/* film grain + vignette */
+.vignette::after {
+  content: "";
+  position: fixed; inset: 0; z-index: 40; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 38%, transparent 55%, rgba(0,0,6,.55));
+}
+
+/* animated grid floor */
+.grid-floor {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(75,225,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(75,225,255,.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 90% 60% at 50% 45%, black 30%, transparent 75%);
+  animation: gridDrift 24s linear infinite;
+}
+@keyframes gridDrift { to { background-position: 56px 56px; } }
+
+/* glass panel */
+.glass {
+  background: rgba(13, 18, 36, 0.55);
+  border: 1px solid rgba(120, 150, 255, 0.14);
+  backdrop-filter: blur(16px);
+}
+
+/* HUD corner brackets */
+.hud-corners::before, .hud-corners::after {
+  content: ""; position: absolute; width: 22px; height: 22px;
+  border-color: rgba(75,225,255,.5); border-style: solid;
+}
+.hud-corners::before { top: 0; left: 0; border-width: 1px 0 0 1px; }
+.hud-corners::after  { bottom: 0; right: 0; border-width: 0 1px 1px 0; }
+
+/* gradient text */
+.grad-text {
+  background: linear-gradient(115deg, #fff 15%, var(--cyan) 45%, var(--violet) 75%, var(--rose) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* neon divider beam */
+.beam {
+  height: 1px; width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(75,225,255,.5), rgba(157,107,255,.5), transparent);
+}
+
+/* marquee */
+.marquee { display: flex; overflow: hidden; user-select: none; gap: 3rem; }
+.marquee-track {
+  display: flex; gap: 3rem; flex-shrink: 0; min-width: 100%;
+  animation: marquee 30s linear infinite;
+}
+@keyframes marquee { to { transform: translateX(calc(-100% - 3rem)); } }
+
+/* skill chip float */
+@keyframes chipFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+/* custom cursor glow (desktop) */
+#cursor-glow {
+  position: fixed; z-index: 50; pointer-events: none;
+  width: 340px; height: 340px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(75,225,255,.07), transparent 65%);
+  transform: translate(-50%, -50%);
+  transition: opacity .4s;
+}
+@media (hover: none) { #cursor-glow { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .grid-floor, .marquee-track { animation: none !important; }
+  html { scroll-behavior: auto; }
+}
