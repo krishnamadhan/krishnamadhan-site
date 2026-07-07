@@ -267,8 +267,7 @@ export function KineticText({ children, className = "", delay = 0 }:
           <motion.span
             className="inline-block"
             initial={{ y: "110%" }}
-            whileInView={{ y: 0 }}
-            viewport={{ once: true }}
+            animate={{ y: 0 }}
             transition={{ duration: 0.7, delay: delay + i * 0.06, ease: [0.2, 0.8, 0.2, 1] }}
           >
             {w}

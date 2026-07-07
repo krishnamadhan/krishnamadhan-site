@@ -21,19 +21,19 @@ export type Chapter = {
   x: number; y: number; scale: number;
   glow: number; warmth: number;
   spread: number; flat: number; split: number;
-  squash: number; spin: number; pulse: number;
+  squash: number; spin: number; pulse: number; dim: number;
 };
 
 export const CHAPTERS: Chapter[] = [
-  { id: "core",      section: "top",      label: "CH.01 / KM CORE",       x: 1.9,  y: 0.0,  scale: 1.15, glow: 1.15, warmth: 0,    spread: 1.0, flat: 0,    split: 0,   squash: 1,    spin: 1.0,  pulse: 0 },
-  { id: "lens",      section: "about",    label: "CH.02 / IDENTITY",      x: 2.6,  y: 0.2,  scale: 0.55, glow: 0.45, warmth: 0,    spread: 0.8, flat: 0.85, split: 0,   squash: 1,    spin: 0.5,  pulse: 0 },
-  { id: "map",       section: "work",     label: "CH.03 / SYSTEMS",       x: 0.0,  y: -0.2, scale: 0.8,  glow: 0.7,  warmth: 0,    spread: 1.6, flat: 0.6,  split: 0.85, squash: 1,   spin: 0.7,  pulse: 0 },
-  { id: "modules",   section: "projects", label: "CH.04 / LAB MODULES",   x: -2.8, y: 0.0,  scale: 0.6,  glow: 0.55, warmth: 0.1,  spread: 0.8, flat: 0.2,  split: 1,   squash: 1,    spin: 0.9,  pulse: 0 },
-  { id: "capsule",   section: "timeline", label: "CH.05 / TRAJECTORY",    x: 2.4,  y: -0.3, scale: 0.45, glow: 0.35, warmth: 0.15, spread: 0.7, flat: 0.3,  split: 0.2, squash: 0.55, spin: 0.25, pulse: 0 },
-  { id: "orbital",   section: "skills",   label: "CH.06 / STACK",         x: 0.0,  y: 0.1,  scale: 0.75, glow: 0.7,  warmth: 0.2,  spread: 1.5, flat: 0.9,  split: 0.9, squash: 1,    spin: 0.6,  pulse: 0 },
-  { id: "fieldlens", section: "offduty",  label: "CH.07 / FIELD LOG",     x: -2.4, y: 0.2,  scale: 0.6,  glow: 0.8,  warmth: 1,    spread: 0.9, flat: 0.95, split: 0,   squash: 1,    spin: 0.4,  pulse: 0 },
-  { id: "roots",     section: "roots",    label: "CH.07 / FIELD LOG",     x: -2.4, y: 0.1,  scale: 0.5,  glow: 0.6,  warmth: 1,    spread: 0.9, flat: 0.95, split: 0,   squash: 1,    spin: 0.35, pulse: 0 },
-  { id: "beacon",    section: "contact",  label: "CH.08 / SIGNAL",        x: 0.0,  y: 0.0,  scale: 0.95, glow: 1.25, warmth: 0.5,  spread: 1.1, flat: 0,    split: 0.3, squash: 1,    spin: 0.8,  pulse: 1 },
+  { id: "core",      section: "top",      label: "CH.01 / KM CORE",       x: 1.9,  y: 0.0,  scale: 1.15, glow: 1.15, warmth: 0,    spread: 1.0, flat: 0,    split: 0,   squash: 1,    spin: 1.0,  pulse: 0 , dim: 1 },
+  { id: "lens",      section: "about",    label: "CH.02 / IDENTITY",      x: 2.6,  y: 0.2,  scale: 0.55, glow: 0.45, warmth: 0,    spread: 0.8, flat: 0.85, split: 0,   squash: 1,    spin: 0.5,  pulse: 0 , dim: 0.45 },
+  { id: "map",       section: "work",     label: "CH.03 / SYSTEMS",       x: 0.0,  y: -0.2, scale: 0.8,  glow: 0.7,  warmth: 0,    spread: 1.0, flat: 0.6,  split: 0.85, squash: 1,   spin: 0.7,  pulse: 0 , dim: 0.3 },
+  { id: "modules",   section: "projects", label: "CH.04 / LAB MODULES",   x: -2.8, y: 0.0,  scale: 0.6,  glow: 0.55, warmth: 0.1,  spread: 0.8, flat: 0.2,  split: 1,   squash: 1,    spin: 0.9,  pulse: 0 , dim: 0.5 },
+  { id: "capsule",   section: "timeline", label: "CH.05 / TRAJECTORY",    x: 2.4,  y: -0.3, scale: 0.45, glow: 0.35, warmth: 0.15, spread: 0.7, flat: 0.3,  split: 0.2, squash: 0.55, spin: 0.25, pulse: 0 , dim: 0.3 },
+  { id: "orbital",   section: "skills",   label: "CH.06 / STACK",         x: 0.0,  y: 0.1,  scale: 0.75, glow: 0.7,  warmth: 0.2,  spread: 1.0, flat: 0.9,  split: 0.9, squash: 1,    spin: 0.6,  pulse: 0 , dim: 0.3 },
+  { id: "fieldlens", section: "offduty",  label: "CH.07 / FIELD LOG",     x: -2.4, y: 0.2,  scale: 0.6,  glow: 0.8,  warmth: 1,    spread: 0.9, flat: 0.95, split: 0,   squash: 1,    spin: 0.4,  pulse: 0 , dim: 0.5 },
+  { id: "roots",     section: "roots",    label: "CH.07 / FIELD LOG",     x: -2.4, y: 0.1,  scale: 0.5,  glow: 0.6,  warmth: 1,    spread: 0.9, flat: 0.95, split: 0,   squash: 1,    spin: 0.35, pulse: 0 , dim: 0.4 },
+  { id: "beacon",    section: "contact",  label: "CH.08 / SIGNAL",        x: 0.0,  y: 0.0,  scale: 0.95, glow: 0.9,  warmth: 0.5,  spread: 0.9, flat: 0,    split: 0.3, squash: 1,    spin: 0.8,  pulse: 1 , dim: 0.4 },
 ];
 
 /* ── tiny shared store: scroll writes targets, R3F + HUD read them ── */
@@ -49,7 +49,7 @@ export const sceneStore = {
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const smooth = (t: number) => t * t * (3 - 2 * t);
 
-const NUM = ["x", "y", "scale", "glow", "warmth", "spread", "flat", "split", "squash", "spin", "pulse"] as const;
+const NUM = ["x", "y", "scale", "glow", "warmth", "spread", "flat", "split", "squash", "spin", "pulse", "dim"] as const;
 
 /** Recompute interpolated params from scroll. Call from a scroll listener. */
 export function updateChapterFromScroll() {

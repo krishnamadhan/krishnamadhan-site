@@ -44,28 +44,28 @@ export const profile = {
   projects: [
     {
       title: "Banter Agent",
-      id: "KM-01", status: "Active", featured: true,
+      id: "KM-01", slug: "banter-agent", status: "Active", featured: true,
       desc: "A memory-driven AI companion living in WhatsApp — Tanglish personality modes, 17 group games, roasts, news digests and fantasy cricket. Powered by Claude, hardened by relentless friends.",
       tags: ["TypeScript", "Claude AI", "WhatsApp", "Supabase"],
       accent: "violet",
     },
     {
       title: "Raspberry Pi Robot Pet",
-      id: "KM-02", status: "Active", featured: true,
+      id: "KM-02", slug: "robot-pet", status: "Active", featured: true,
       desc: "An autonomous companion on a Pi 5: camera vision, voice, OLED eyes, touch and motion sensors, motors — driven by a personality engine with moods, circadian energy and episodic memory of the people it meets.",
       tags: ["Python", "asyncio", "Computer Vision", "ESP32"],
       accent: "cyan",
     },
     {
       title: "AI Coding Workflows",
-      id: "KM-03", status: "Prototype", featured: false,
+      id: "KM-03", slug: "ai-coding-workflows", status: "Prototype", featured: false,
       desc: "An agentic development loop where Claude Code plays scrum master and Codex plays engineer — a kanban of AI teammates with task leases, journals, reviews and a daily standup, running unattended.",
       tags: ["Claude Code", "Codex", "Agents", "Automation"],
       accent: "amber",
     },
     {
       title: "Data Platform Automation",
-      id: "KM-04", status: "Case study soon", featured: false,
+      id: "KM-04", slug: "data-platform-automation", status: "Building", featured: false,
       desc: "Professional craft: onboarding automation, ETL reliability and data-quality tooling for cloud data platforms — the systems that make data trustworthy at scale.",
       tags: ["AWS", "Terraform", "ETL", "Data Mesh"],
       accent: "rose",

@@ -12,7 +12,7 @@
  */
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { sceneStore, updateChapterFromScroll } from "@/lib/sceneChapters";
 
@@ -22,7 +22,7 @@ const VIOLET = new THREE.Color("#9d6bff");
 
 const MODULE_ACCENTS = ["#9d6bff", "#4be1ff", "#ffb454", "#ff5c8a", "#4be1ff", "#9d6bff"];
 
-function LabObject() {
+function LabObject({ wrap }: { wrap: React.RefObject<HTMLDivElement> }) {
   const group = useRef<THREE.Group>(null!);
   const shell = useRef<THREE.Mesh>(null!);
   const inner = useRef<THREE.Mesh>(null!);
@@ -36,14 +36,15 @@ function LabObject() {
     const p = sceneStore.params;
     const c = cur.current;
     // double-smooth: scroll already eased; frame-lerp kills any residual step
-    const k = 1 - Math.pow(0.0015, dt);
-    for (const key of ["x", "y", "scale", "glow", "warmth", "spread", "flat", "split", "squash", "spin", "pulse"] as const)
+    const k = 1 - Math.pow(0.0008, dt);
+    for (const key of ["x", "y", "scale", "glow", "warmth", "spread", "flat", "split", "squash", "spin", "pulse", "dim"] as const)
       c[key] += (p[key] - c[key]) * k;
 
+    if (wrap.current) wrap.current.style.opacity = String(0.2 + 0.8 * c.dim);
     const g = group.current;
     const isMobile = (camera as THREE.PerspectiveCamera).aspect < 0.9;
     g.position.x = c.x * (isMobile ? 0.25 : 1);
-    g.position.y = c.y + Math.sin(t * 0.8) * 0.08;
+    g.position.y = c.y + Math.sin(t * 0.7) * 0.045;
     const pulse = c.pulse * (0.06 * Math.sin(t * 2.2));
     g.scale.set(c.scale + pulse, (c.scale + pulse) * c.squash, c.scale + pulse);
 
@@ -61,6 +62,13 @@ function LabObject() {
 
     rings.current.forEach((r, i) => {
       if (!r) return;
+      if (i === 3) {   // aperture iris: faces camera, counter-rotates, tint + glow only
+        r.rotation.z -= dt * 0.6 * c.spin;
+        const am = r.material as THREE.MeshStandardMaterial;
+        am.emissive.copy(tint);
+        am.emissiveIntensity = 0.5 + 0.7 * c.glow;
+        return;
+      }
       const base = Math.PI / 2 + (i - 1) * 0.55;
       r.rotation.x = base + (0 - base) * c.flat * (i === 1 ? 0.9 : 1); // flatten to disc
       r.rotation.z += dt * (0.2 + i * 0.1) * c.spin * (i % 2 ? -1 : 1);
@@ -100,6 +108,30 @@ function LabObject() {
           <meshBasicMaterial transparent opacity={0.35} />
         </mesh>
       ))}
+      {/* mechanical aperture: bright inner iris ring + dark blades */}
+      <mesh ref={(el) => { if (el) rings.current[3] = el; }} rotation={[0, 0, 0]}>
+        <torusGeometry args={[1.15, 0.045, 12, 64]} />
+        <meshStandardMaterial color="#141b30" emissive="#4be1ff" emissiveIntensity={0.9}
+          roughness={0.2} metalness={1} />
+      </mesh>
+      {/* radial tick marks — instrument detail */}
+      <group>
+        {Array.from({ length: 24 }).map((_, i) => {
+          const a = (i / 24) * Math.PI * 2;
+          return (
+            <mesh key={`t${i}`} position={[Math.cos(a) * 2.05, Math.sin(a) * 2.05, 0]}
+                  rotation={[0, 0, a]}>
+              <boxGeometry args={[i % 6 === 0 ? 0.16 : 0.07, 0.012, 0.012]} />
+              <meshBasicMaterial color="#4be1ff" transparent opacity={0.5} />
+            </mesh>
+          );
+        })}
+      </group>
+      {/* glass chamber shell — faint fresnel-ish skin */}
+      <mesh>
+        <sphereGeometry args={[2.9, 32, 32]} />
+        <meshBasicMaterial color="#9d6bff" transparent opacity={0.035} side={2} />
+      </mesh>
       {Array.from({ length: 6 }).map((_, i) => (
         <mesh key={`m${i}`} ref={(el) => { if (el) modules.current[i] = el; }}>
           <icosahedronGeometry args={[1, 0]} />
@@ -112,6 +144,7 @@ function LabObject() {
 }
 
 export default function KMScene() {
+  const wrapRef = useRef<HTMLDivElement>(null!);
   const [ok, setOk] = useState(true);
   const [reduced, setReduced] = useState(false);
 
@@ -150,13 +183,13 @@ export default function KMScene() {
   }
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden>
+    <div ref={wrapRef} className="fixed inset-0 z-0 pointer-events-none" aria-hidden>
       <Canvas camera={{ position: [0, 0, 6.4], fov: 46 }} dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}>
         <ambientLight intensity={0.55} />
         <pointLight position={[4, 4, 6]} intensity={36} color="#4be1ff" />
         <pointLight position={[-5, -3, -4]} intensity={26} color="#9d6bff" />
-        <LabObject />
+        <LabObject wrap={wrapRef} />
       </Canvas>
     </div>
   );

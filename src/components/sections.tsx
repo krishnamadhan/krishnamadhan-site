@@ -23,7 +23,7 @@ export function Nav() {
   useEffect(() => {
     const obs = new IntersectionObserver(
       (es) => es.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); }),
-      { rootMargin: "-40% 0px -55% 0px" }
+      { rootMargin: "-45% 0px -50% 0px" }
     );
     NAV_LINKS.forEach((l) => {
       const el = document.getElementById(l.toLowerCase());
@@ -136,10 +136,8 @@ export function Hero() {
           </div>
         </motion.div>
       </div>
-      <div className="absolute bottom-0 inset-x-[6vw] hidden md:flex items-center justify-between border-t border-white/5 py-3">
-        <span className="coord">LAB STATUS · ALL SYSTEMS NOMINAL</span>
-        <span className="coord animate-pulse">SCROLL TO EXPLORE ↓</span>
-        <span className="coord">KM.OS ACTIVE · SYS.ONLINE</span>
+      <div className="absolute bottom-14 inset-x-[6vw] hidden md:flex items-center justify-center border-t border-white/5 py-3">
+        <span className="coord animate-pulse">LAB STATUS · ALL SYSTEMS NOMINAL — SCROLL TO EXPLORE ↓</span>
       </div>
     </section>
   );
@@ -153,7 +151,7 @@ export function About() {
         <SectionHeading idx="01" label="MODULE / IDENTITY">About</SectionHeading>
         <div className="grid lg:grid-cols-[1.35fr_1fr] gap-14 items-start">
           <div>
-            <div className="space-y-5 text-dim text-[1.06rem] leading-relaxed">
+            <div className="space-y-5 text-ink/75 text-[1.06rem] leading-relaxed max-w-prose">
               {profile.about.map((p, i) => (
                 <Reveal key={i} delay={i * 0.1}><p className="[&>strong]:text-ink">{p}</p></Reveal>
               ))}
@@ -243,13 +241,16 @@ export function Projects() {
         <div className="grid md:grid-cols-2 gap-6">
           {profile.projects.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.08}>
-              <div onPointerEnter={() => { sceneStore.hotModule = i; }}
-                   onPointerLeave={() => { sceneStore.hotModule = -1; }}>
+              <a href={`/projects/${p.slug}`} className="block h-full focus-visible:outline-none group/link"
+                 onPointerEnter={() => { sceneStore.hotModule = i; }}
+                 onPointerLeave={() => { sceneStore.hotModule = -1; }}
+                 onFocus={() => { sceneStore.hotModule = i; }}
+                 onBlur={() => { sceneStore.hotModule = -1; }}>
               <TiltCard
                 className={`relative overflow-hidden rounded-2xl p-8 h-full group border transition-colors
                   ${p.featured
-                    ? "border-white/20 bg-gradient-to-br from-panel to-panel/80 backdrop-blur-xl"
-                    : "border-white/10 bg-panel/80 backdrop-blur-sm"}`}
+                    ? "border-white/20 bg-gradient-to-br from-panel to-panel/80 backdrop-blur-xl group-hover/link:border-cyan/50 group-focus-visible/link:border-cyan/60 group-hover/link:shadow-[0_0_60px_-18px_rgba(75,225,255,.4)]"
+                    : "border-white/10 bg-panel/80 backdrop-blur-sm group-hover/link:border-cyan/40 group-focus-visible/link:border-cyan/50"}`}
               >
                 {p.featured && (
                   <div className={`absolute -top-16 -right-16 w-44 h-44 rounded-full blur-3xl opacity-30 ${ACCENT[p.accent]}`} />
@@ -281,7 +282,7 @@ export function Projects() {
                   {p.featured ? "Flagship module →" : "Case study soon →"}
                 </span>
               </TiltCard>
-              </div>
+              </a>
             </Reveal>
           ))}
         </div>
@@ -369,7 +370,7 @@ export function Skills() {
 export function OffDuty() {
   const life = profile.life;
   return (
-    <section id="offduty" className="relative py-[15vh] px-[6vw] field">
+    <section id="offduty" className="relative py-[11vh] px-[6vw] field">
       <div className="max-w-6xl mx-auto">
         <SectionHeading idx="06" label="FIELD LOG / OFF DUTY" accent="amber">{life.heading}</SectionHeading>
         <Reveal>
@@ -447,7 +448,7 @@ export function OffDuty() {
 /* ── roots ── */
 export function Roots() {
   return (
-    <section id="roots" className="relative py-[13vh] px-[6vw] field">
+    <section id="roots" className="relative py-[9vh] px-[6vw] field">
       <div className="max-w-3xl mx-auto text-center">
         <SectionHeading idx="07" label="FIELD LOG / ORIGIN" accent="amber">Roots</SectionHeading>
         <Reveal>
@@ -466,7 +467,7 @@ export function Contact() {
       <div className="max-w-3xl mx-auto text-center">
         <SectionHeading idx="08" label="MODULE / UPLINK">Contact</SectionHeading>
         <Reveal>
-          <div className="chamber px-8 md:px-16 py-14">
+          <div className="chamber px-8 md:px-16 py-14 !bg-panel/85">
             <p className="font-display text-2xl md:text-3xl font-semibold mb-3 grad-text">
               {profile.contact.heading}
             </p>
@@ -476,7 +477,7 @@ export function Contact() {
             <Magnetic href={`mailto:${profile.contact.email}`} primary>Say hello</Magnetic>
             <div className="flex justify-center gap-7 mt-9">
               {profile.contact.socials.map((s) => (
-                <a key={s.label} href={s.href} className="text-dim text-xs tracking-[0.15em] uppercase hover:text-cyan transition-colors">
+                <a key={s.label} href={s.href} className="text-ink/70 text-xs tracking-[0.15em] uppercase hover:text-cyan transition-colors">
                   {s.label}
                 </a>
               ))}
