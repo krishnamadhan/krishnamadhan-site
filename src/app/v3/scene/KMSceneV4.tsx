@@ -114,8 +114,15 @@ function CoreActor() {
       </mesh>
       <mesh ref={inner}>
         <icosahedronGeometry args={[0.7, 1]} />
-        <meshStandardMaterial color="#15171c" emissive="#6ab0d8" emissiveIntensity={0.35}
-          roughness={0.45} metalness={0.6} flatShading />
+        {/* translucent graphite-blue glass, not flat paint (≤0.2 fill) */}
+        <meshStandardMaterial color="#2a3d4a" emissive="#6ab0d8" emissiveIntensity={0.35}
+          roughness={0.45} metalness={0.6} flatShading
+          transparent opacity={0.18} depthWrite={false} />
+      </mesh>
+      {/* wireframe edge over the glass core so it still reads as an object */}
+      <mesh>
+        <icosahedronGeometry args={[0.7, 1]} />
+        <meshBasicMaterial color="#ece9e2" wireframe transparent opacity={0.4} />
       </mesh>
       {[0, 1, 2].map((i) => (
         <mesh key={i} ref={(el) => { if (el) rings.current[i] = el; }}
@@ -250,7 +257,13 @@ function NetworkActor() {
       </instancedMesh>
       <mesh ref={core}>
         <icosahedronGeometry args={[0.34, 1]} />
-        <meshStandardMaterial color="#0a0f1e" emissive="#6ab0d8" emissiveIntensity={1} roughness={0.3} metalness={0.85} flatShading />
+        {/* translucent graphite-blue glass core (was a flat blue disc) */}
+        <meshStandardMaterial color="#2a3d4a" emissive="#6ab0d8" emissiveIntensity={1} roughness={0.3} metalness={0.85} flatShading
+          transparent opacity={0.2} depthWrite={false} />
+      </mesh>
+      <mesh>
+        <icosahedronGeometry args={[0.34, 1]} />
+        <meshBasicMaterial color="#ece9e2" wireframe transparent opacity={0.4} />
       </mesh>
     </group></group>
   );
@@ -557,7 +570,13 @@ function BeaconActor() {
     <group ref={pos}><group ref={spin}>
       <mesh ref={heart}>
         <octahedronGeometry args={[0.42, 0]} />
-        <meshStandardMaterial color="#0a0f1e" emissive="#6ab0d8" emissiveIntensity={1.2} roughness={0.25} metalness={0.85} flatShading />
+        {/* translucent graphite-blue glass diamond (was a solid blue diamond) */}
+        <meshStandardMaterial color="#2a3d4a" emissive="#6ab0d8" emissiveIntensity={1.2} roughness={0.25} metalness={0.85} flatShading
+          transparent opacity={0.2} depthWrite={false} />
+      </mesh>
+      <mesh>
+        <octahedronGeometry args={[0.42, 0]} />
+        <meshBasicMaterial color="#ece9e2" wireframe transparent opacity={0.42} />
       </mesh>
       {[0, 1, 2].map((i) => (
         <mesh key={i} ref={(el) => { if (el) rings.current[i] = el; }}>

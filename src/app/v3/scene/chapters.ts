@@ -33,7 +33,7 @@ export const CHAPTERS: Chapter[] = [
   { id: "atom",    section: "professional", label: "STACK ORBITALS",  actor: 5, x: -3.5, y: 0.5,  scale: 0.6,  glow: 0.5,  warmth: 0.25, dim: 0.2 },
   { id: "flask",   section: "lab",          label: "LAB REACTION",    actor: 3, x: -3.5, y: -0.2, scale: 0.55, glow: 0.6,  warmth: 0.35, dim: 0.4 },
   { id: "cricket", section: "lab",          label: "CHAMPION MODE",   actor: 6, x: 2.5,  y: 1.0,  scale: 0.58, glow: 0.7,  warmth: 1,    dim: 0.4 },
-  { id: "helix",   section: "roots",        label: "IDENTITY HELIX",  actor: 1, x: 0.5,  y: -0.1, scale: 0.66, glow: 0.4,  warmth: 0.3,  dim: 0.38 },
+  { id: "helix",   section: "roots",        label: "IDENTITY HELIX",  actor: 1, x: 2.4,  y: -1.5, scale: 0.6,  glow: 0.4,  warmth: 0.3,  dim: 0.26 },
   { id: "beacon",  section: "contact",      label: "SIGNAL BEACON",   actor: 7, x: 0.0,  y: 0.1,  scale: 0.88, glow: 0.7,  warmth: 0.5,  dim: 0.4 },
 ];
 

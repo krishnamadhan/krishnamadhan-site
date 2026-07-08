@@ -198,14 +198,14 @@ export function Hero() {
             text always wins at 390px. Above portrait (z-10), below text (z-20). */}
         <div
           className="md:hidden pointer-events-none absolute -inset-x-5 -inset-y-12 z-[15]"
-          style={{ background: "linear-gradient(180deg, rgba(12,13,16,.30) 0%, rgba(12,13,16,.74) 44%, rgba(12,13,16,.90) 100%)" }}
+          style={{ background: "linear-gradient(180deg, rgba(12,13,16,.34) 0%, rgba(12,13,16,.72) 30%, rgba(12,13,16,.90) 50%, rgba(12,13,16,.96) 100%)" }}
           aria-hidden
         />
         {/* portrait — bottom-anchored centre-right, behind/in-front sandwich */}
         <motion.div
           style={reduced ? {} : { x: px, y: py }}
-          className="pointer-events-none absolute z-10 right-0 md:right-2 bottom-0
-                     w-[74vw] max-w-[420px] md:w-auto md:h-[72vh] md:max-h-[680px]
+          className="pointer-events-none absolute z-10 -right-4 md:right-2 bottom-0
+                     w-[60vw] max-w-[340px] md:w-auto md:h-[72vh] md:max-h-[680px]
                      flex items-end justify-end"
           aria-hidden
         >
@@ -220,7 +220,7 @@ export function Hero() {
               width={779}
               height={1093}
               priority
-              className="h-auto w-[74vw] max-w-[420px] md:w-auto md:h-[72vh] md:max-h-[680px] object-contain select-none"
+              className="h-auto w-[60vw] max-w-[340px] md:w-auto md:h-[72vh] md:max-h-[680px] object-contain select-none"
             />
           </motion.div>
         </motion.div>
@@ -278,23 +278,35 @@ export function Hero() {
           </Magnetic>
         </Reveal>
 
-        {/* floating status cards — desktop around portrait; mobile chips below */}
-        <div className="relative z-20 mt-8 md:mt-0 md:absolute md:right-0 md:top-4 md:w-[260px] flex md:block gap-3 overflow-x-auto md:overflow-visible pb-1">
-          {v4.hero.cards.map((c, i) => (
-            <motion.div
-              key={c.k}
-              initial={reduced ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 + i * 0.12, duration: 0.5 }}
-              className={`v4-raised px-4 py-3 shrink-0 min-w-[210px] md:min-w-0 md:mb-3 ${reduced ? "" : "v4-float"}`}
-              style={reduced ? {} : { animationDelay: `${i * 1.4}s` }}
-            >
-              <p className="v4-mono text-[10px] tracking-[0.14em] text-v4-mute flex items-center gap-2">
-                <span className={cardTone(c.tone)} aria-hidden /> {c.k}
-              </p>
-              <p className="mt-1 text-[13px] text-v4-ink">{c.v}</p>
-            </motion.div>
-          ))}
+        {/* floating status cards.
+            Mobile: a single horizontal-scroll row below the CTA (chips).
+            Desktop: positioned AROUND the portrait, never over his face —
+            A + B float top-right above/right of the head, C drops low near
+            his crossed arms. Each card is individually placed. */}
+        <div className="relative z-20 mt-8 md:mt-0 md:static flex md:block gap-3 overflow-x-auto md:overflow-visible pb-1">
+          {v4.hero.cards.map((c, i) => {
+            // desktop placement per card — resolves against the hero container
+            // (md:static wrapper), keeping the whole face clear at 1280–1600.
+            const deskPos =
+              i === 0 ? "md:top-1 md:right-0 md:w-[232px]"        // A: top-right, above the head
+              : i === 1 ? "md:top-[92px] md:right-0 md:w-[232px]"  // B: just below A, same right edge
+              : "md:top-auto md:bottom-2 md:right-1 md:w-[232px]"; // C: low, over his crossed arms
+            return (
+              <motion.div
+                key={c.k}
+                initial={reduced ? false : { opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 + i * 0.12, duration: 0.5 }}
+                className={`v4-raised px-4 py-3 shrink-0 min-w-[210px] md:min-w-0 md:absolute md:z-20 ${deskPos} ${reduced ? "" : "v4-float"}`}
+                style={reduced ? {} : { animationDelay: `${i * 1.4}s` }}
+              >
+                <p className="v4-mono text-[10px] tracking-[0.14em] text-v4-mute flex items-center gap-2">
+                  <span className={cardTone(c.tone)} aria-hidden /> {c.k}
+                </p>
+                <p className="mt-1 text-[13px] text-v4-ink">{c.v}</p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
       <LiveLab />
