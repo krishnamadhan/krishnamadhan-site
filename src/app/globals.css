@@ -213,3 +213,16 @@ a:focus-visible, button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .v3-cutout { transition: none !important; }
 }
+
+/* v3: hero-only scrim above the canvas — tames the core bloom behind the
+   portrait; stronger over the copy column on mobile for readability */
+.v3-hero-scrim {
+  position: absolute; top: 0; left: 0; right: 0; height: 100vh;
+  z-index: 5; pointer-events: none;
+  background: radial-gradient(ellipse 60% 55% at 72% 48%, rgba(4,6,13,.45), transparent 70%);
+}
+@media (max-width: 768px) {
+  .v3-hero-scrim {
+    background: linear-gradient(180deg, rgba(4,6,13,.25), rgba(4,6,13,.6) 45%, rgba(4,6,13,.25) 80%);
+  }
+}

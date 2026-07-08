@@ -26,6 +26,9 @@ export default function V3Page() {
       <div className="vignette" aria-hidden />
       <div className="grid-floor" aria-hidden />
       <KMScene />
+      {/* Tames the core actor's bloom in the hero only: sits above the canvas
+          (z-[5]) but below content (z-10); absolute, so it scrolls away. */}
+      <div className="v3-hero-scrim" aria-hidden />
       <SmoothScroll />
       <CursorGlow />
       <ScrollHUD />
