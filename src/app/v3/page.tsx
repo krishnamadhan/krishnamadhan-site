@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import {
   About, Contact, Footer, Hero, Nav, OffDuty, Projects, Roots, Skills, Timeline, Work,
 } from "./sections3";
@@ -16,12 +15,16 @@ export const metadata: Metadata = {
 export default function V3Page() {
   return (
     <>
-      {/* Hero backdrop photo + scrim. MUST appear before <KMScene /> in the
-          DOM: it is z-0, the KMScene canvas is also z-0 but a later sibling, so
-          the wireframe core paints ABOVE this backdrop instead of under it. */}
-      <div className="v3-hero-bg" aria-hidden>
-        <Image src="/photos/hero-bg-ocean.webp" alt="" fill priority
-               sizes="100vw" className="object-cover object-[50%_66%] opacity-90" />
+      {/* v3.1 ALIVE hero: aurora colour field replaces the flat dark backdrop.
+          MUST appear before <KMScene /> in the DOM: it is z-0, the KMScene
+          canvas is also z-0 but a later sibling, so the wireframe core paints
+          ABOVE the aurora. Three drifting colour blobs (screen-blended) over a
+          low-opacity ocean texture for realness. Static under reduced-motion. */}
+      <div className="v3-aurora" aria-hidden>
+        <div className="v3-aurora-tex" style={{ backgroundImage: "url(/photos/hero-bg-ocean.webp)" }} />
+        <div className="v3-blob v3-blob-violet" />
+        <div className="v3-blob v3-blob-cyan" />
+        <div className="v3-blob v3-blob-rose" />
       </div>
       <div className="vignette" aria-hidden />
       <div className="grid-floor" aria-hidden />

@@ -87,9 +87,10 @@ function LabStatus() {
   return (
     <div className="v3-panel v3-mono text-[11px] px-4 py-2.5 flex flex-wrap items-center gap-x-4 gap-y-1.5">
       <span className="v3-mlabel">LIVE FROM THE LAB</span>
-      {v3.labStatus.map((s) => (
+      {v3.labStatus.map((s, i) => (
         <span key={s.k} className="inline-flex items-center gap-2 text-[#c3cde0]">
-          <span className="v3-led" aria-hidden />
+          {/* LEDs pulse with staggered delay (alive micro-motion) */}
+          <span className="v3-led v3-led-pulse" style={{ animationDelay: `${i * 0.45}s` }} aria-hidden />
           <span className="text-[#8fa0c4]">{s.k}:</span> {s.v}
         </span>
       ))}
@@ -97,7 +98,7 @@ function LabStatus() {
   );
 }
 
-/* ── HERO: real dusk environment + scroll-reactive portrait cutout ── */
+/* ── HERO: aurora environment + duotone portrait as scroll-reactive artwork ── */
 export function Hero() {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
@@ -105,13 +106,27 @@ export function Hero() {
     target: ref,
     offset: ["start start", "end start"],
   });
-  // progress 0→1 over first viewport; portrait "turns / steps aside"
-  const rotateY = useTransform(scrollYProgress, [0, 1], [-10, -2]);
-  const tX = useTransform(scrollYProgress, [0, 1], [0, -24]);
-  const tY = useTransform(scrollYProgress, [0, 1], [0, 30]);
-  const gray = useTransform(scrollYProgress, [0, 1], [0.65, 0]);
-  const filter = useTransform(gray, (g) => `grayscale(${g}) saturate(1.05)`);
-  const opacity = useTransform(scrollYProgress, [0, 0.7, 1], [1, 1, 0]);
+  // v3.1: rotation must be FELT. Over the first viewport the duotone face
+  // strongly turns, tilts and lifts, hue-shifts, then fades out.
+  const rotateY = useTransform(scrollYProgress, [0, 1], [-16, 10]);
+  const rotateZ = useTransform(scrollYProgress, [0, 1], [-2, 2]);
+  const tY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const hue = useTransform(scrollYProgress, [0, 1], [0, 30]);
+  const filter = useTransform(hue, (h) => `hue-rotate(${h}deg) saturate(1.05)`);
+  const opacity = useTransform(scrollYProgress, [0, 0.75, 1], [1, 1, 0]);
+
+  // desktop pointer parallax (±8px), disabled under reduced-motion
+  const [par, setPar] = useState({ x: 0, y: 0 });
+  useEffect(() => {
+    if (reduced) return;
+    const onMove = (e: PointerEvent) => {
+      const nx = (e.clientX / window.innerWidth - 0.5) * 2;
+      const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+      setPar({ x: nx * 8, y: ny * 8 });
+    };
+    window.addEventListener("pointermove", onMove);
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [reduced]);
 
   const fade = (d: number) =>
     reduced ? {} : {
@@ -136,7 +151,7 @@ export function Hero() {
             className="font-display font-extrabold leading-[0.98] text-[clamp(3.2rem,7.5vw,6.2rem)] [text-shadow:0_2px_30px_rgba(4,6,13,.8)]"
           >
             <KineticText delay={0.15}>Krishna</KineticText><br />
-            <span className="grad-text"><KineticText delay={0.3}>Madhan</KineticText></span>
+            <span className="grad-text v3-alive-grad"><KineticText delay={0.3}>Madhan</KineticText></span>
           </motion.h1>
           <motion.p {...fade(0.4)} className="mt-6 max-w-xl v3-body text-lg md:text-xl leading-relaxed [text-shadow:0_1px_16px_rgba(4,6,13,.9)]">
             {profile.subheadline}
@@ -163,33 +178,49 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* right: portrait cutout, bottom-anchored, scroll-reactive */}
-        <div className="relative hidden lg:block self-end" style={{ perspective: 900 }}>
-          <motion.div
-            className="relative mx-auto"
-            style={reduced ? {} : { rotateY, x: tX, y: tY, opacity, transformOrigin: "bottom center" }}
-          >
-            <div className="v3-ground-glow" aria-hidden />
-            <motion.div className="v3-cutout relative w-full max-w-[380px] mx-auto" style={reduced ? {} : { filter }}>
-              <Image src="/photos/portrait-cutout.webp" alt="Krishna Madhan"
-                     width={779} height={1093} priority
-                     className="w-full h-auto object-contain" style={{ maxHeight: "46vh", width: "auto", margin: "0 auto" }} />
-            </motion.div>
-          </motion.div>
-        </div>
       </div>
 
-      {/* mobile: smaller cutout, far behind-right — sits under the scrim + panels, never over text */}
-      <div className="lg:hidden absolute right-[-16%] bottom-0 z-[1] pointer-events-none opacity-45" aria-hidden>
-        <Image src="/photos/portrait-cutout.webp" alt=""
-               width={779} height={1093}
-               className="v3-cutout w-auto" style={{ height: "34vh" }} />
+      {/* right: duotone portrait as BACKGROUND ART — big, bottom-anchored,
+          screen-blended, no rim/border. Absolute (out of the copy grid) so it
+          can be ~80vh and melt behind the wireframe core. Strong scroll
+          rotation + desktop pointer parallax. */}
+      <div className="hidden lg:block absolute right-[3vw] bottom-0 z-[2] pointer-events-none"
+           style={{ perspective: 1000 }} aria-hidden>
+        <motion.div
+          style={reduced ? {} : {
+            rotateY, rotateZ, y: tY, opacity,
+            x: par.x,
+            transformOrigin: "bottom center",
+          }}
+        >
+          <motion.div className="v3-duotone" style={reduced ? {} : { filter, y: par.y }}>
+            <Image src="/photos/portrait-duotone.webp" alt="Krishna Madhan"
+                   width={779} height={1093} priority
+                   className="w-auto" style={{ height: "80vh" }} />
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* mobile: duotone behind-right of the copy, screen-blended, ~55vh.
+          Sits under the text scrim so the headline stays readable. Shares the
+          same scroll rotation so the mid-scroll turn is felt on phone too. */}
+      <div className="lg:hidden absolute right-[-14%] bottom-0 z-[1] pointer-events-none"
+           style={{ perspective: 1000 }} aria-hidden>
+        <motion.div
+          style={reduced ? {} : { rotateY, rotateZ, y: tY, opacity, transformOrigin: "bottom center" }}
+        >
+          <motion.div className="v3-duotone-mobile" style={reduced ? {} : { filter }}>
+            <Image src="/photos/portrait-duotone.webp" alt=""
+                   width={779} height={1093}
+                   className="w-auto" style={{ height: "55vh" }} />
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Left-aligned with the copy column and lifted above the ChapterHUD pill
           (bottom-center) so they no longer overlap. */}
       <div className="absolute bottom-24 left-[6vw] z-10 hidden md:flex items-center">
-        <span className="v3-mono coord animate-pulse text-cyan/70">SCROLL TO BOOT THE STORY ↓</span>
+        <span className="v3-mono coord v3-scroll-cue text-cyan/70">SCROLL TO BOOT THE STORY ↓</span>
       </div>
     </section>
   );

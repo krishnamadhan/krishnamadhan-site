@@ -45,6 +45,12 @@ await m.goto(base, { waitUntil: "networkidle" });
 await m.waitForTimeout(2600);
 await m.screenshot({ path: `${out}/11-mobile-hero.png` });
 console.log("✓ mobile hero");
+// mobile hero mid-scroll (~60vh): must visibly show the portrait rotation vs 11
+await m.evaluate(() => window.scrollTo({ top: window.innerHeight * 0.6, behavior: "instant" }));
+await m.waitForTimeout(1400);
+await m.screenshot({ path: `${out}/13-mobile-midscroll.png` });
+console.log("✓ mobile hero-midscroll");
+
 await m.evaluate(() => {
   const el = document.getElementById("offduty");
   window.scrollTo({ top: (el ? el.offsetTop : 0) + 40, behavior: "instant" });

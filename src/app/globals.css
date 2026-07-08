@@ -226,3 +226,119 @@ a:focus-visible, button:focus-visible {
     background: linear-gradient(180deg, rgba(4,6,13,.25), rgba(4,6,13,.6) 45%, rgba(4,6,13,.25) 80%);
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   v3.1 — "ALIVE" hero: aurora background + duotone portrait as artwork
+   (append-only, /v3 only). Round 3.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Aurora: colour-blob field pinned to the hero viewport. Sits at z-0 (like the
+   backdrop photo) so the KMScene canvas + content paint above it. Its own
+   stacking context; transform-only keyframes = GPU-cheap. */
+.v3-aurora {
+  position: absolute; top: 0; left: 0; right: 0; height: 100vh;
+  z-index: 0; overflow: hidden; pointer-events: none;
+  /* isolate so mix-blend on the ocean texture stays inside the aurora */
+  isolation: isolate;
+}
+/* low-opacity ocean texture for realness, blended so colour reads on top */
+.v3-aurora-tex {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: 50% 60%;
+  opacity: .2; mix-blend-mode: luminosity;
+}
+.v3-blob {
+  position: absolute; border-radius: 50%;
+  filter: blur(120px); mix-blend-mode: screen;
+  will-change: transform;
+}
+.v3-blob-violet {
+  width: 62vw; height: 62vw; left: -8vw; top: -14vh;
+  background: radial-gradient(circle, rgba(157,107,255,.9), transparent 68%);
+  opacity: .42; animation: v3-drift-a 24s ease-in-out infinite alternate;
+}
+.v3-blob-cyan {
+  width: 54vw; height: 54vw; right: -6vw; top: 2vh;
+  background: radial-gradient(circle, rgba(75,225,255,.85), transparent 68%);
+  opacity: .40; animation: v3-drift-b 32s ease-in-out infinite alternate;
+}
+.v3-blob-rose {
+  width: 50vw; height: 50vw; left: 18vw; bottom: -22vh;
+  background: radial-gradient(circle, rgba(255,92,138,.8), transparent 68%);
+  opacity: .34; animation: v3-drift-c 40s ease-in-out infinite alternate;
+}
+/* soft floor so the aurora fades into the site body below the hero */
+.v3-aurora::after {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, transparent 40%, rgba(4,6,13,.55) 78%, #04060d 100%);
+}
+@keyframes v3-drift-a {
+  from { transform: translate3d(0,0,0) scale(1); }
+  to   { transform: translate3d(6vw,7vh,0) scale(1.12); }
+}
+@keyframes v3-drift-b {
+  from { transform: translate3d(0,0,0) scale(1.05); }
+  to   { transform: translate3d(-7vw,5vh,0) scale(.92); }
+}
+@keyframes v3-drift-c {
+  from { transform: translate3d(0,0,0) scale(1); }
+  to   { transform: translate3d(5vw,-8vh,0) scale(1.15); }
+}
+
+/* Duotone portrait as background art: screen-blends into the design (dark
+   pixels ≈ bg → vanish). NO rim, NO border. Masked to fade bottom + outer
+   edge so it melts rather than ending in a sticker cut. */
+.v3-duotone {
+  mix-blend-mode: screen;
+  -webkit-mask-image:
+    linear-gradient(180deg, black 62%, transparent 100%),
+    linear-gradient(90deg, transparent 0%, black 26%, black 100%);
+  mask-image:
+    linear-gradient(180deg, black 62%, transparent 100%),
+    linear-gradient(90deg, transparent 0%, black 26%, black 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  will-change: transform, filter, opacity;
+}
+/* mobile: face fades on the inner (text-facing) edge instead of outer */
+.v3-duotone-mobile {
+  mix-blend-mode: screen; opacity: .85;
+  -webkit-mask-image:
+    linear-gradient(180deg, black 60%, transparent 100%),
+    linear-gradient(270deg, transparent 0%, black 34%, black 100%);
+  mask-image:
+    linear-gradient(180deg, black 60%, transparent 100%),
+    linear-gradient(270deg, transparent 0%, black 34%, black 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  will-change: transform, filter, opacity;
+}
+
+/* alive: slow drift of the "Madhan" gradient fill */
+.v3-alive-grad {
+  background-size: 220% 100%;
+  animation: v3-grad-drift 14s ease-in-out infinite alternate;
+}
+@keyframes v3-grad-drift {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+/* alive: LIVE-strip LEDs pulse (staggered via inline animation-delay) */
+.v3-led-pulse { animation: v3-led-pulse 2.2s ease-in-out infinite; }
+@keyframes v3-led-pulse {
+  0%, 100% { opacity: .55; box-shadow: 0 0 4px rgba(55,243,154,.6); }
+  50%      { opacity: 1;   box-shadow: 0 0 10px rgba(55,243,154,1); }
+}
+/* alive: scroll cue gentle bounce */
+.v3-scroll-cue { animation: v3-bounce 2.4s ease-in-out infinite; }
+@keyframes v3-bounce {
+  0%, 100% { transform: translateY(0); opacity: .7; }
+  50%      { transform: translateY(6px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v3-blob,
+  .v3-alive-grad,
+  .v3-led-pulse,
+  .v3-scroll-cue { animation: none !important; }
+}

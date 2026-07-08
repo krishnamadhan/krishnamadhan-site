@@ -118,3 +118,47 @@ Executor reports → Fable 5 reviews screenshots + code diff → comments via
 SendMessage → executor fixes → repeat until Fable signs off → Madhan reviews
 at http://192.168.1.200:3210/v3 (preview server rebuild needed: kill 3210,
 `npm run build`, restart — do NOT do this yourself; Fable handles it).
+
+---
+
+## Round 3 — "ALIVE" hero (v3.1)
+Madhan's verdict on v3: readability much better (KEEP all of it); hero still
+feels clip-art and dead; the cutout is underused; background should be
+colourful. Reference pattern: templates where a big UN-highlighted face
+(treated, tonal, part of the artwork) visibly rotates with scroll.
+
+New asset (prepared, ready): `public/photos/portrait-duotone.webp` —
+779×1093 alpha, tritone gradient-map (navy→violet→icy cyan) of the cutout.
+Dark pixels ≈ site bg, so `mix-blend-mode: screen` melts it into the design.
+
+1. **Aurora background** (kill the flat-dark feel; hero region only):
+   - Keep the ocean texture at low opacity (~.2, blend `overlay` or
+     `luminosity`) for realness; if it fights the colour, drop it.
+   - 3 huge blurred colour blobs — violet #9d6bff, cyan #4be1ff, rose
+     #ff5c8a — blur ≥110px, opacity .3–.45, each on its own slow transform
+     keyframe drift (24s/32s/40s, different directions). transform-only
+     animation (GPU cheap). Static under prefers-reduced-motion.
+   - Grain + vignette stay. Headline contrast must survive (scrim under the
+     copy column if needed — verify at 390px).
+2. **Portrait becomes the artwork**: replace portrait-cutout.webp usage with
+   portrait-duotone.webp. Desktop: right side, ~80vh tall, bottom-anchored,
+   `mix-blend-mode: screen`, mask fading bottom + outer edge. NO rim shadow,
+   NO border — it is background art, not a sticker. Mobile: ~55vh,
+   behind-right of the copy, opacity ~.85, same blend; keep the mobile text
+   scrim so the headline stays readable.
+3. **Scroll rotation must be FELT (esp. phone)**: over the first ~120vh —
+   rotateY(-16deg → 10deg), rotateZ(-2deg → 2deg), translateY(0 → -60px),
+   filter hue-rotate(0 → 30deg), then opacity → 0. transform-origin bottom
+   center, perspective 1000px on wrapper. Desktop adds pointer parallax
+   (±8px). framer useScroll/useTransform. reduced-motion: static.
+4. **Alive micro-motion**: slow background-position drift on the "Madhan"
+   grad-text; LIVE-strip LEDs pulse with staggered animation-delay; scroll
+   cue gets a gentle bounce. All CSS, all disabled under reduced-motion.
+5. Scene/core: unchanged (scrim from 24d7d78 stays). The duotone face will
+   overlap the wireframe — screen blend should make that read as layered
+   holography; judge your screenshots and nudge face position/opacity if it
+   turns muddy.
+6. Verify: recapture 01-top, 10-hero-midscroll, 11-mobile-hero + NEW
+   13-mobile-midscroll.png (390×844, scrolled ~60vh — must visibly show the
+   rotation mid-state vs 11). Commit "design(v3.1): alive hero — aurora +
+   duotone portrait".
