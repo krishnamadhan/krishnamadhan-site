@@ -252,15 +252,33 @@ a:focus-visible, button:focus-visible {
   display: grid; place-items: center;
 }
 
-/* portrait: printed-editorial feel, no blend/rim/glow */
+/* portrait: printed-editorial feel, no blend/rim/glow.
+   v4.1 — desktop gets black editorial drop-shadow depth so he lifts off the
+   background at FULL opacity (no fade mask). The mask below is mobile-only. */
 .v4-portrait {
-  filter: sepia(.08) contrast(1.02);
+  filter: sepia(.08) contrast(1.02) drop-shadow(0 30px 70px rgba(0,0,0,.55));
   will-change: transform, opacity;
 }
-/* mobile: bottom scrim so hero text wins over the portrait behind it */
-.v4-portrait-scrim {
-  -webkit-mask-image: linear-gradient(180deg, black 62%, transparent 100%);
-  mask-image: linear-gradient(180deg, black 62%, transparent 100%);
+/* v4.1 mobile-only: a light bottom ground-fade so the portrait meets the copy
+   band cleanly. Face zone (upper portrait) untouched. NEVER applied on desktop
+   — on desktop the fade made his chest translucent (root cause #1). */
+@media (max-width: 767px) {
+  .v4-portrait-scrim {
+    -webkit-mask-image: linear-gradient(180deg, black 78%, transparent 100%);
+    mask-image: linear-gradient(180deg, black 78%, transparent 100%);
+  }
+}
+/* Operator block portrait frame: magazine crop, image may break out of the
+   frame's top edge. object-top keeps the head in view. */
+.v4-opframe {
+  position: relative;
+  background: #1b1e24;
+  border: 1px solid rgba(236,233,226,.10);
+  border-radius: 16px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 20px 60px rgba(0,0,0,.5);
+}
+.v4-opframe img {
+  filter: contrast(1.02) saturate(1.02);
 }
 
 /* status pill */

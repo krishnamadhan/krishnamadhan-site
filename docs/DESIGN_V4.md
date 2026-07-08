@@ -202,3 +202,76 @@ real things, a little wry, never "passionate about leveraging synergies".
 ## Review loop
 Executor reports → Fable reviews screenshots+diff → comments → fix → repeat
 until sign-off → Fable deploys to Vercel + posts summary to Madhan.
+
+---
+
+# Round 5 — Portrait presence (v4.1)
+
+Madhan's verdict on v4: redesign direction approved, but the portrait is now
+"barely visible… too hidden, too dark, too secondary — weakens the personal
+identity". The site must clearly read as HIS portfolio, not an anonymous
+kinetic product page. Everything else stays (palette, sections, motion,
+no-purple). This is a scoped fix, NOT a redesign restart.
+
+Root causes found in the current build (fix all three):
+1. `.v4-portrait-scrim` bottom-fade mask (`black 62% → transparent`) is
+   applied on DESKTOP too — it was meant for mobile. It makes his chest/arms
+   translucent (scene wireframes show through his shirt) and he reads like a
+   faded background texture. Desktop must have NO fade mask, or at most a
+   ~6% bottom ground-fade.
+2. `portrait-mono.webp` is mid-heavy/dark against #0c0d10.
+   **New asset prepared: `public/photos/portrait-hero.webp`** (779×1093 alpha)
+   — punchier silver grade: deep blacks, lifted mids, bright highlights,
+   clarity pass. Use it for the hero. Keep `sepia(.08)`-level warmth max.
+3. rotateY(-7°) at rest turns the face away on load. Rest pose must be ~0°.
+
+## 5.1 Hero portrait (layout A — bigger, right-of-center, type wraps)
+- Portrait `portrait-hero.webp`, desktop ~82vh (max-h ~760px), right-of-center
+  (roughly right: 6–10% of container), bottom-anchored. FULL opacity at rest.
+- Depth instead of fade: CSS `filter: drop-shadow(0 30px 70px rgba(0,0,0,.55))`
+  (black editorial depth, NOT colored glow) so he lifts off the background.
+- Z-sandwich stays (KRISHNA behind, MADHAN stroke in front) but the stroke
+  line must cross his CHEST, never above the chin. Verify at 1280/1440/1600:
+  full face unobstructed by type, cards, and wireframes.
+- Scene: in the fork's chapters, nudge the hero core actor left/away from the
+  portrait or dim it slightly so wireframe lines don't slice the face zone.
+- Scroll motion, calmer: rotateY 0→4°, translateY 0→-30px, scale 1→1.03,
+  opacity 1 until 0.75 then →0 by 1.1. Keep pointer parallax ±6px. The
+  portrait must feel alive but stable — presence first, motion second.
+- Cards: keep current around-the-face placement; card B must not touch hair.
+
+## 5.2 NEW "Operator" block (compact, after hero, before #systems)
+An editorial magazine-style identity moment so the human is unmissable:
+- Left (or right): `portrait-editorial.webp` (colour grade) in a tall
+  graphite frame — `v4-raised` panel, 1px `v4-line` border, deep soft shadow;
+  image `object-cover object-top` so it crops to head-and-torso; the portrait
+  may break ~24px out of the frame's top edge (magazine-cover feel, do it
+  with a plain overflow trick, no masks that eat the face).
+- Right: eyebrow `OPERATOR`, then 4 credibility rows separated by hairlines,
+  mono labels + ink values:
+  `ROLE — Software Engineer, JPMorgan Chase` ·
+  `SCHOOL — B.Tech, NIT Trichy` ·
+  `FOCUS — AI systems · data platforms · robotics` ·
+  `LAB — Raspberry Pi rack in a Bangalore living room, online 24/7`.
+  Under them one short human line (2 sentences max, v4 tone, from a new
+  additive `v4.operator` key in profile.ts).
+- Section id `#operator`; do NOT add it to the nav (keeps nav 5 links);
+  scene chapters: either no actor here or reuse hero dim; keep it compact
+  (~70vh desktop, auto mobile).
+
+## 5.3 Mobile hero recomposition (390px is the test)
+Current mobile buries the face behind the CTA/cards. Switch to
+portrait-first: portrait ~44–50vh, top-right area under the nav, face fully
+visible in the first screen; name overlaps its lower third; copy + CTAs +
+card row + LIVE strip follow below. The heavy scrim shrinks to a band under
+the text only — his face zone must NOT be dimmed. If the first screen gets
+tight, the credibility strip may move below the fold; face + name + one CTA
+must fit 390×844.
+
+## 5.4 Verify (executor)
+- typecheck + build clean; recapture full v9-v4 set (overwrite) PLUS a
+  1280×800 desktop hero shot (name it 12-hero-1280.png).
+- Self-check each shot: is the face CLEARLY visible in 5s? Any card/type/
+  wireframe on the face? Mobile first screen shows the face?
+- Commit `design(v4.1): portrait presence — hero grade, operator block,
+  mobile recomposition`.

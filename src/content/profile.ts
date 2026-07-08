@@ -247,6 +247,19 @@ export const profile = {
         { k: "lights", v: "TV-sync evening window" },
       ],
     },
+    /** #operator — compact magazine-style identity block after the hero.
+     *  NOT in nav. Rows read as mono label — ink value. */
+    operator: {
+      eyebrow: "OPERATOR",
+      rows: [
+        { k: "ROLE", v: "Software Engineer, JPMorgan Chase" },
+        { k: "SCHOOL", v: "B.Tech, NIT Trichy" },
+        { k: "FOCUS", v: "AI systems · data platforms · robotics" },
+        { k: "LAB", v: "Raspberry Pi rack in a Bangalore living room, online 24/7" },
+      ],
+      human:
+        "I ship data platforms by day and treat my living room as a lab by night. Same engineer, same standard — whether it's a production pipeline or a robot that has to remember your face.",
+    },
     /** #systems — flagship builds, editorial list-cards */
     systems: {
       label: "SELECTED SYSTEMS",

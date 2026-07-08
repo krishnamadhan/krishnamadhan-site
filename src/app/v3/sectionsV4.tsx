@@ -169,11 +169,12 @@ export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
-  // portrait scroll reaction over the first 100vh (premium-subtle)
-  const rotY = useTransform(scrollYProgress, [0, 1], [-7, 5]);
-  const pY = useTransform(scrollYProgress, [0, 1], [0, -40]);
-  const pScale = useTransform(scrollYProgress, [0, 1], [1, 1.04]);
-  const pOpacity = useTransform(scrollYProgress, [0, 0.9, 1.1], [1, 0.4, 0]);
+  // v4.1 portrait scroll reaction — calmer: presence first, motion second.
+  // rest pose is 0° (face toward viewer on load), full opacity until 0.75.
+  const rotY = useTransform(scrollYProgress, [0, 1], [0, 4]);
+  const pY = useTransform(scrollYProgress, [0, 1], [0, -30]);
+  const pScale = useTransform(scrollYProgress, [0, 1], [1, 1.03]);
+  const pOpacity = useTransform(scrollYProgress, [0, 0.75, 1.1], [1, 1, 0]);
 
   // desktop pointer parallax ±6px
   const px = useSpring(0, { stiffness: 120, damping: 20 });
@@ -193,40 +194,68 @@ export function Hero() {
 
   return (
     <section id="top" ref={ref} className="relative min-h-[100svh] flex items-end md:items-center">
-      <div className="mx-auto max-w-6xl w-full px-5 md:px-8 pt-28 pb-24 md:pb-0 md:py-0 relative">
-        {/* mobile-only scrim: darkens the scene + portrait behind the copy so
-            text always wins at 390px. Above portrait (z-10), below text (z-20). */}
+      {/* MOBILE portrait — portrait-first: top-right under the nav, face fully
+          visible in the first screen. Sits behind the name/copy (z-0). The
+          scrim below covers only the TEXT band, never his face. */}
+      <motion.div
+        style={reduced ? {} : { x: px, y: py }}
+        className="md:hidden pointer-events-none absolute z-0 right-0 top-14
+                   h-[48vh] flex items-start justify-end"
+        aria-hidden
+      >
+        <motion.div
+          style={reduced ? {} : { rotateY: rotY, y: pY, scale: pScale, opacity: pOpacity }}
+          className="v4-portrait v4-portrait-scrim origin-top h-full"
+          transformTemplate={(_, gen) => `perspective(1100px) ${gen}`}
+        >
+          <Image
+            src="/photos/portrait-hero.webp"
+            alt=""
+            width={779}
+            height={1093}
+            priority
+            className="h-full w-auto object-contain select-none"
+          />
+        </motion.div>
+      </motion.div>
+
+      <div className="mx-auto max-w-6xl w-full px-5 md:px-8 pt-[42vh] pb-24 md:pt-28 md:pb-0 md:py-0 relative">
+        {/* mobile-only scrim: sits UNDER the text band (starts below the face
+            zone) so the copy always wins at 390px without dimming his face. */}
         <div
-          className="md:hidden pointer-events-none absolute -inset-x-5 -inset-y-12 z-[15]"
-          style={{ background: "linear-gradient(180deg, rgba(12,13,16,.34) 0%, rgba(12,13,16,.72) 30%, rgba(12,13,16,.90) 50%, rgba(12,13,16,.96) 100%)" }}
+          className="md:hidden pointer-events-none absolute -inset-x-5 -bottom-12 top-[-4vh] z-[5]"
+          style={{ background: "linear-gradient(180deg, transparent 0%, rgba(12,13,16,.55) 14%, rgba(12,13,16,.88) 34%, rgba(12,13,16,.96) 60%)" }}
           aria-hidden
         />
-        {/* portrait — bottom-anchored centre-right, behind/in-front sandwich */}
+        {/* DESKTOP portrait — bigger (~82vh), right-of-center, bottom-anchored,
+            FULL opacity, black drop-shadow depth (no fade mask). z-sandwich:
+            KRISHNA behind (z-0), portrait (z-10), MADHAN stroke in front (z-20). */}
         <motion.div
           style={reduced ? {} : { x: px, y: py }}
-          className="pointer-events-none absolute z-10 -right-4 md:right-2 bottom-0
-                     w-[60vw] max-w-[340px] md:w-auto md:h-[72vh] md:max-h-[680px]
-                     flex items-end justify-end"
+          className="hidden md:flex pointer-events-none absolute z-10 right-[7%] bottom-0
+                     h-[82vh] max-h-[760px] items-end justify-end"
           aria-hidden
         >
           <motion.div
             style={reduced ? {} : { rotateY: rotY, y: pY, scale: pScale, opacity: pOpacity }}
-            className="v4-portrait v4-portrait-scrim origin-bottom"
+            className="v4-portrait origin-bottom h-full"
             transformTemplate={(_, gen) => `perspective(1100px) ${gen}`}
           >
             <Image
-              src="/photos/portrait-mono.webp"
+              src="/photos/portrait-hero.webp"
               alt=""
               width={779}
               height={1093}
               priority
-              className="h-auto w-[60vw] max-w-[340px] md:w-auto md:h-[72vh] md:max-h-[680px] object-contain select-none"
+              className="h-full w-auto object-contain select-none"
             />
           </motion.div>
         </motion.div>
 
-        {/* giant name — z-sandwich: KRISHNA behind portrait, MADHAN in front */}
-        <div className="relative z-0">
+        {/* giant name — z-sandwich: KRISHNA behind portrait (desktop), MADHAN
+            in front. On mobile the name sits ABOVE the scrim (z-10) so it reads
+            over the portrait's lower third. */}
+        <div className="relative z-10 md:z-0">
           <h1 className="v4-display text-v4-ink text-[clamp(3.8rem,15vw,9rem)] leading-[0.9]">
             <span className={`block ${reduced ? "" : "v4-rise"}`} style={{ animationDelay: "0.15s" }}>
               {v4.hero.lineA}
@@ -288,8 +317,8 @@ export function Hero() {
             // desktop placement per card — resolves against the hero container
             // (md:static wrapper), keeping the whole face clear at 1280–1600.
             const deskPos =
-              i === 0 ? "md:top-1 md:right-0 md:w-[232px]"        // A: top-right, above the head
-              : i === 1 ? "md:top-[92px] md:right-0 md:w-[232px]"  // B: just below A, same right edge
+              i === 0 ? "md:top-[64px] md:right-0 md:w-[232px]"    // A: top-right, clear of the nav button
+              : i === 1 ? "md:top-[156px] md:right-0 md:w-[232px]" // B: just below A, same right edge
               : "md:top-auto md:bottom-2 md:right-1 md:w-[232px]"; // C: low, over his crossed arms
             return (
               <motion.div
@@ -330,6 +359,51 @@ function LiveLab() {
         </div>
       </div>
     </div>
+  );
+}
+
+/* ══════════════ OPERATOR — compact magazine identity block ══════════════ */
+
+export function Operator() {
+  const o = v4.operator;
+  return (
+    <section id="operator" className="relative z-20 mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-24 md:min-h-[70vh] md:flex md:items-center">
+      <div className="grid md:grid-cols-[minmax(0,20rem)_1fr] gap-10 md:gap-16 items-center w-full">
+        {/* portrait in a tall graphite frame; image breaks ~24px out of the top */}
+        <Reveal>
+          <div className="v4-opframe h-[380px] md:h-[440px] w-full max-w-[20rem] mx-auto md:mx-0">
+            <div className="absolute inset-0 -top-6 overflow-hidden rounded-[16px]">
+              <Image
+                src="/photos/portrait-editorial.webp"
+                alt="Krishna Madhan"
+                width={779}
+                height={1093}
+                className="w-full h-full object-cover object-top select-none"
+              />
+            </div>
+          </div>
+        </Reveal>
+
+        {/* credibility rows + human line */}
+        <div>
+          <Reveal><p className="v4-mlabel mb-6">{o.eyebrow}</p></Reveal>
+          <div>
+            {o.rows.map((r, i) => (
+              <Reveal key={r.k} delay={i * 0.06}>
+                <div className="grid grid-cols-[6rem_1fr] sm:grid-cols-[8rem_1fr] gap-4 sm:gap-8 py-4 border-t border-v4-line items-baseline">
+                  <p className="v4-mono text-[11px] tracking-[0.16em] text-v4-mute">{r.k}</p>
+                  <p className="text-[15px] md:text-[17px] text-v4-ink leading-snug">{r.v}</p>
+                </div>
+              </Reveal>
+            ))}
+            <div className="v4-hairline" />
+          </div>
+          <Reveal delay={0.1}>
+            <p className="mt-7 max-w-2xl text-[15px] md:text-[16px] text-v4-body leading-relaxed">{o.human}</p>
+          </Reveal>
+        </div>
+      </div>
+    </section>
   );
 }
 

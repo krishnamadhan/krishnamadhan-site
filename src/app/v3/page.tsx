@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import {
-  Contact, Footer, Hero, Lab, Nav, Professional, Roots, Systems,
+  Contact, Footer, Hero, Lab, Nav, Operator, Professional, Roots, Systems,
 } from "./sectionsV4";
 
 // v4 forked scene — neutralised palette, imports only ./scene/* (never the
@@ -24,6 +24,7 @@ export default function V3Page() {
       <Nav />
       <main className="relative z-10">
         <Hero />
+        <Operator />
         <Systems />
         <Professional />
         <Lab />
