@@ -140,3 +140,70 @@ a:focus-visible, button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .map-line, .scanline::after { animation: none !important; }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   v3 — "Operator Edition" readability + hero system (append-only, /v3 only)
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* AA-safe body copy token. #c3cde0 on #04060d ≈ 11:1; on scrim panels ≈ 8:1 */
+.v3-body { color: #c3cde0; }
+.v3-body strong { color: #ffffff; font-weight: 600; }
+
+/* readable micro-label (10px, brighter cyan than the base .module-label) */
+.v3-mlabel {
+  font-family: ui-monospace, monospace;
+  font-size: 10px; letter-spacing: .26em; text-transform: uppercase;
+  color: rgba(75,225,255,.9);
+}
+
+/* solid-ish reading panel: text never sits on raw scene pixels */
+.v3-panel {
+  background: rgba(4,6,13,.72);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(120,150,255,.16);
+  border-radius: 16px;
+}
+.v3-panel-strong {
+  background: rgba(4,6,13,.86);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(120,150,255,.18);
+  border-radius: 20px;
+}
+
+/* hero backdrop photo + scrim */
+.v3-hero-bg {
+  position: absolute; inset: 0; z-index: 0; overflow: hidden;
+  pointer-events: none;
+}
+.v3-hero-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(4,6,13,.55), rgba(4,6,13,.92) 75%);
+}
+
+/* portrait cutout — subtle cyan rim via drop-shadow, no thick halo */
+.v3-cutout {
+  filter: drop-shadow(0 0 22px rgba(75,225,255,.28))
+          drop-shadow(0 22px 40px rgba(0,0,0,.55));
+  will-change: transform, filter, opacity;
+}
+/* faint ground-glow ellipse that ties the cutout into the scene */
+.v3-ground-glow {
+  position: absolute; bottom: 0; left: 50%;
+  width: 62%; height: 60px; transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(75,225,255,.22), transparent 70%);
+  filter: blur(10px); pointer-events: none;
+}
+
+/* live-lab status strip: green LEDs, monospace */
+.v3-led {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: #37f39a; box-shadow: 0 0 8px rgba(55,243,154,.9);
+}
+.v3-mono { font-family: ui-monospace, monospace; }
+
+/* skill chips at 16px */
+.v3-chip { font-size: 16px; line-height: 1.1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .v3-cutout { transition: none !important; }
+}

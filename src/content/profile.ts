@@ -192,6 +192,30 @@ export const profile = {
       telemetry: [],
     },
   },
+  /** v3 "Operator Edition" additive content — optional, only /v3 reads these.
+   *  Nothing here changes existing keys; other pages are unaffected. */
+  v3: {
+    bootLine:
+      "KM·OS 26.2 — booted from a Raspberry Pi 5 in a Bangalore living room.",
+    places: [
+      { name: "TIRUVANNAMALAI", coord: "12.23°N 79.07°E" },
+      { name: "BANGALORE", coord: "12.97°N 77.59°E" },
+    ],
+    labStatus: [
+      { k: "cosmo", v: "curious" },
+      { k: "banteragent", v: "online" },
+      { k: "board", v: "12 open tasks" },
+      { k: "lights", v: "TV-sync evening window" },
+    ],
+    tanglish: {
+      work: "\"semma scene, let's build\" — the friend group, probably",
+      offduty: "\"one more over da\" — everyone, always",
+    },
+    cricketLine:
+      "Right-hand bat · tournament winner · 2 fantasy platforms built to settle arguments",
+    rootsHill: "grew up under Arunachala",
+    footerSignoff: "Built on the same Pi that runs the robot. 47°C, mostly.",
+  },
   contact: {
     heading: "Let's build something useful, weird, and future-facing.",
     // TODO: replace all placeholders with real URLs before publishing
