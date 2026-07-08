@@ -216,6 +216,147 @@ export const profile = {
     rootsHill: "grew up under Arunachala",
     footerSignoff: "Built on the same Pi that runs the robot. 47°C, mostly.",
   },
+  /** v4 "Premium Kinetic Editorial" additive content — only /v3 reads these.
+   *  Nothing here changes existing keys; other pages are unaffected. */
+  v4: {
+    boot: "KM·OS 26.2 — booted from a Raspberry Pi 5 in a Bangalore living room.",
+    hero: {
+      lineA: "KRISHNA",
+      lineB: "MADHAN",
+      positioning: "Systems engineer by profession. Experimental builder by instinct.",
+      concrete:
+        "I design data platforms at JPMorgan Chase and run a living-room lab where a Raspberry Pi robot, a WhatsApp agent, and two fantasy-cricket platforms stay online 24/7.",
+      credibility: [
+        "JPMorgan Chase", "NIT Trichy", "AWS", "Python / TS",
+        "3 systems running 24/7 in my living room",
+      ],
+      cards: [
+        { k: "SWE · JPMorgan Chase", v: "Data platforms, AWS", tone: "blue" },
+        { k: "B.Tech · NIT Trichy", v: "Systems engineering", tone: "ink" },
+        { k: "NOW BUILDING", v: "Cosmo — a Raspberry Pi robot", tone: "amber" },
+      ],
+      ctaPrimary: "View systems",
+      ctaGhost: "Contact",
+    },
+    lab: {
+      liveLabel: "LIVE FROM THE LAB",
+      live: [
+        { k: "cosmo", v: "curious" },
+        { k: "banteragent", v: "online" },
+        { k: "board", v: "12 open tasks" },
+        { k: "lights", v: "TV-sync evening window" },
+      ],
+    },
+    /** #systems — flagship builds, editorial list-cards */
+    systems: {
+      label: "SELECTED SYSTEMS",
+      title: "Lab Modules",
+      intro:
+        "Five systems I designed, built, and keep running. Real hardware, real users, real uptime — not case-study fiction.",
+      cards: [
+        {
+          n: "01", name: "Banter Agent", slug: "banter-agent", status: "LIVE",
+          what: "A memory-driven AI companion that lives inside my friend group's WhatsApp.",
+          why: "Tanglish personality, 17 group games, and months of uptime against the harshest QA on earth: friends who want to break it.",
+          stack: ["TypeScript", "Claude", "Supabase", "Pi 5"],
+        },
+        {
+          n: "02", name: "Cosmo — Robot Pet", slug: "robot-pet", status: "IN LAB",
+          what: "An autonomous companion on a Pi 5 that behaves like a pet, not a chatbot.",
+          why: "A 56-node behaviour tree, decaying mood/energy state, and episodic memory of the people it meets. The same stimulus lands differently on a tired robot.",
+          stack: ["Python", "asyncio", "ONNX", "ESP32-S3"],
+        },
+        {
+          n: "03", name: "IPL Fantasy", slug: "", status: "LIVE",
+          what: "A Dream11-style fantasy-cricket platform built so my friends could argue with data.",
+          why: "Live scoring, leaderboards, and a ten-year friend group as production users. Deployed on Vercel + Supabase.",
+          stack: ["Next.js", "Supabase", "Vercel"],
+        },
+        {
+          n: "04", name: "BSPL Cricket", slug: "", status: "IN LAB",
+          what: "A stat-weighted cricket simulator with auctions, teams, and match engines.",
+          why: "Because one fantasy platform was not enough to settle the arguments. Draft, bid, simulate, complain.",
+          stack: ["Next.js", "Supabase", "Sim engine"],
+        },
+        {
+          n: "05", name: "KM·OS — This Site", slug: "", status: "SHIPPED",
+          what: "The portfolio you're reading — a kinetic editorial front end over a persistent WebGL scene.",
+          why: "One evolving hero object flows between sections instead of one object commuting left and right. Built on the same Pi it describes.",
+          stack: ["Next.js", "R3F", "framer-motion"],
+        },
+      ],
+      proofCaption: "SCREEN CAPTURE — COMING SOON",
+    },
+    /** #professional — recruiter-friendly capability rows + timeline + skills */
+    professional: {
+      label: "PROFESSIONAL SYSTEMS",
+      title: "What I do at JPMorgan Chase",
+      intro:
+        "I build the plumbing modern data runs on: cloud infrastructure and data platforms designed for reliability at scale. Broad strokes only — the interesting internals stay at work.",
+      capabilities: [
+        { cap: "AWS data platforms", desc: "Design and operate AWS-based data platforms that feed downstream analytics and reporting." },
+        { cap: "ETL design", desc: "Build ETL and Lambda-based processing pipelines that move and reshape data reliably." },
+        { cap: "Terraform infra", desc: "Provision cloud estates as code so environments are reproducible and reviewable." },
+        { cap: "Spinnaker pipelines", desc: "Ship changes through Spinnaker deployment pipelines with staged, safe rollouts." },
+        { cap: "Data-mesh architecture", desc: "Model domain-owned data products with quality contracts instead of one central swamp." },
+        { cap: "Incident RCA", desc: "Run production support, root-cause analysis, and the guardrails that keep data trustworthy." },
+        { cap: "Vendor data integration", desc: "Integrate external vendor data feeds and automate the onboarding that used to be toil." },
+      ],
+      timeline: [
+        { era: "2015–2019", title: "NIT Trichy", desc: "B.Tech — first-principles engineering habits." },
+        { era: "2019 →", title: "Software Engineer, JPMorgan Chase", desc: "Cloud + data platform engineering in Bangalore." },
+        { era: "Now", title: "Data platforms at scale", desc: "AWS, Terraform, Spinnaker, ETL, data-mesh — automation as a way of life." },
+      ],
+      skillGroups: [
+        { group: "Languages", items: ["Java", "Python", "TypeScript"] },
+        { group: "Cloud + Infra", items: ["AWS", "Terraform", "Spinnaker"] },
+        { group: "Data", items: ["ETL", "Lambda", "Data Mesh", "Data Quality"] },
+        { group: "AI + Robotics", items: ["Claude Code", "AI Agents", "Raspberry Pi", "ESP32"] },
+      ],
+    },
+    /** #lab — personal lab, playful but premium */
+    labSection: {
+      label: "PERSONAL LAB",
+      title: "A living room that runs 24/7",
+      intro:
+        "An 8GB Raspberry Pi 5 on my shelf runs a small civilization: a robot with moods, a WhatsApp agent, sync-lighting, and two fantasy-cricket platforms built to settle friend-group arguments.",
+      tanglish: "\"semma scene, let's build\" — the friend group, probably",
+      cricketLine:
+        "Right-hand bat · tournament winner · 2 fantasy platforms built to settle arguments · arguments settled: ∞",
+      fieldLog: [
+        { img: "/photos/trophy.webp", cap: "Tournament winner — trophies kissed at sunset.", tag: "GOLDEN HOUR" },
+        { img: "/photos/trek.webp", cap: "Trails and hills — systems thinking, uphill edition.", tag: "FIELD LOG" },
+        { img: "/photos/voyage.webp", cap: "New places, new inputs. Shipping, literally.", tag: "VOYAGE" },
+      ],
+      outro:
+        "Personal builds ship the same way professional ones do: built for real people, tested on real hardware, iterated until they feel right.",
+    },
+    /** #roots — mature, brief */
+    roots: {
+      label: "ROOTS",
+      hill: "grew up under Arunachala",
+      text:
+        "I grew up in Tiruvannamalai, a temple town under Arunachala where things get built to last. Staying useful to the place you come from matters to me — I care about real-world, community-minded impact.",
+      places: [
+        { name: "TIRUVANNAMALAI", coord: "12.23°N 79.07°E" },
+        { name: "BANGALORE", coord: "12.97°N 77.59°E" },
+      ],
+    },
+    /** #contact */
+    contact: {
+      label: "CONTACT",
+      heading:
+        "Open to AI systems, platform engineering, robotics, and agentic workflow collaborations.",
+      footerSignoff: "Built on the same Pi that runs the robot. 47°C, mostly.",
+    },
+    nav: [
+      { label: "Systems", href: "#systems" },
+      { label: "Professional", href: "#professional" },
+      { label: "Lab", href: "#lab" },
+      { label: "Roots", href: "#roots" },
+      { label: "Contact", href: "#contact" },
+    ],
+  },
   contact: {
     heading: "Let's build something useful, weird, and future-facing.",
     // TODO: replace all placeholders with real URLs before publishing

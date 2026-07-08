@@ -142,203 +142,155 @@ a:focus-visible, button:focus-visible {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   v3 — "Operator Edition" readability + hero system (append-only, /v3 only)
+   v4 — "Premium Kinetic Editorial" (append-only, /v3 only). Round 4.
+   Replaces the deleted v3 "Operator Edition" + v3.1 "ALIVE" rule blocks.
+   Neutral graphite palette, hairline borders, near-zero coloured glow.
    ───────────────────────────────────────────────────────────────────────── */
 
-/* AA-safe body copy token. #c3cde0 on #04060d ≈ 11:1; on scrim panels ≈ 8:1 */
-.v3-body { color: #c3cde0; }
-.v3-body strong { color: #ffffff; font-weight: 600; }
+/* page shell: the /v3 route paints a warm-charcoal background over the body */
+.v4-root {
+  background: #0c0d10;
+  min-height: 100vh;
+  position: relative;
+}
+/* very faint radial warmth top-right + fine grain — no blobs, no photo */
+.v4-atmos {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 45% at 82% 8%, rgba(224,164,88,.05), transparent 70%),
+    radial-gradient(50% 40% at 12% 96%, rgba(106,176,216,.035), transparent 72%);
+}
+.v4-grain {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .04;
+  background-image:
+    linear-gradient(0deg, rgba(236,233,226,.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(236,233,226,.5) 1px, transparent 1px);
+  background-size: 3px 3px;
+  mix-blend-mode: overlay;
+}
 
-/* readable micro-label (10px, brighter cyan than the base .module-label) */
-.v3-mlabel {
+/* type: display headline weight/tracking for the editorial voice */
+.v4-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700; letter-spacing: -0.02em; line-height: 0.95;
+}
+.v4-mono {
+  font-family: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, monospace;
+}
+.v4-mlabel {
   font-family: ui-monospace, monospace;
-  font-size: 10px; letter-spacing: .26em; text-transform: uppercase;
-  color: rgba(75,225,255,.9);
+  font-size: 11px; letter-spacing: .26em; text-transform: uppercase;
+  color: #7c828d;
 }
 
-/* solid-ish reading panel: text never sits on raw scene pixels */
-.v3-panel {
-  background: rgba(4,6,13,.72);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(120,150,255,.16);
+/* graphite panel: 1px hairline + subtle top-edge light, soft black depth */
+.v4-panel {
+  background: #15171c;
+  border: 1px solid rgba(236,233,226,.10);
   border-radius: 16px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 20px 60px rgba(0,0,0,.5);
 }
-.v3-panel-strong {
-  background: rgba(4,6,13,.86);
+.v4-raised {
+  background: rgba(27,30,36,.80);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(120,150,255,.18);
-  border-radius: 20px;
+  border: 1px solid rgba(236,233,226,.12);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 18px 50px rgba(0,0,0,.45);
+}
+.v4-hairline { height: 1px; background: rgba(236,233,226,.10); }
+
+/* chip */
+.v4-chip {
+  border: 1px solid rgba(236,233,226,.14);
+  border-radius: 999px;
+  color: #b8bdc7;
+  font-size: 13px; line-height: 1;
+  padding: .5rem .85rem;
+  transition: color .2s, border-color .2s;
+}
+.v4-chip:hover { color: #ece9e2; border-color: rgba(106,176,216,.5); }
+
+/* status pill LEDs */
+.v4-led {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: #e0a458; box-shadow: 0 0 6px rgba(224,164,88,.7);
+}
+.v4-led-blue { background: #6ab0d8; box-shadow: 0 0 6px rgba(106,176,216,.6); }
+.v4-led-pulse { animation: v4-led-pulse 2.4s ease-in-out infinite; }
+@keyframes v4-led-pulse {
+  0%,100% { opacity: .5; }
+  50%     { opacity: 1; }
 }
 
-/* hero backdrop photo + scrim.
-   Absolute, pinned to the top viewport only (not inset:0 of the whole page),
-   z-0 so the later-sibling KMScene canvas (also z-0) paints above it. */
-.v3-hero-bg {
-  position: absolute; top: 0; left: 0; right: 0; height: 100vh;
-  z-index: 0; overflow: hidden; pointer-events: none;
+/* editorial list-card: large index numeral, lift on hover */
+.v4-listcard {
+  position: relative;
+  border-top: 1px solid rgba(236,233,226,.10);
+  transition: transform .2s ease, border-color .2s ease;
 }
-.v3-hero-bg::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(4,6,13,.55), rgba(4,6,13,.92) 75%);
+.v4-listcard:hover { border-color: rgba(236,233,226,.22); }
+.v4-numeral {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700; letter-spacing: -0.03em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(236,233,226,.28);
+  transition: color .25s ease, -webkit-text-stroke-color .25s ease;
 }
-
-/* portrait cutout — subtle cyan rim via drop-shadow, no thick halo.
-   Bottom fade so the cutout doesn't end in a hard horizontal cut mid-air. */
-.v3-cutout {
-  filter: drop-shadow(0 0 22px rgba(75,225,255,.28))
-          drop-shadow(0 22px 40px rgba(0,0,0,.55));
-  -webkit-mask-image: linear-gradient(180deg, black 76%, transparent 100%);
-  mask-image: linear-gradient(180deg, black 76%, transparent 100%);
-  will-change: transform, filter, opacity;
-}
-/* faint ground-glow ellipse that ties the cutout into the scene — a flat
-   floor pool under his feet, NOT a disc behind him. Kept subtle. */
-.v3-ground-glow {
-  position: absolute; bottom: 4px; left: 50%; z-index: -1;
-  width: 58%; height: 34px; transform: translateX(-50%);
-  background: radial-gradient(ellipse at center, rgba(75,225,255,.22), transparent 70%);
-  filter: blur(12px); pointer-events: none;
+.v4-listcard:hover .v4-numeral {
+  color: rgba(224,164,88,.9);
+  -webkit-text-stroke-color: rgba(224,164,88,.9);
 }
 
-/* live-lab status strip: green LEDs, monospace */
-.v3-led {
-  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
-  background: #37f39a; box-shadow: 0 0 8px rgba(55,243,154,.9);
-}
-.v3-mono { font-family: ui-monospace, monospace; }
-
-/* skill chips at 16px */
-.v3-chip { font-size: 16px; line-height: 1.1; }
-
-@media (prefers-reduced-motion: reduce) {
-  .v3-cutout { transition: none !important; }
+/* proof placeholder frame (16:10) */
+.v4-proof {
+  aspect-ratio: 16 / 10;
+  background:
+    repeating-linear-gradient(135deg, rgba(236,233,226,.02) 0 10px, transparent 10px 20px),
+    #15171c;
+  border: 1px dashed rgba(236,233,226,.14);
+  border-radius: 12px;
+  display: grid; place-items: center;
 }
 
-/* v3: hero-only scrim above the canvas — tames the core bloom behind the
-   portrait; stronger over the copy column on mobile for readability */
-.v3-hero-scrim {
-  position: absolute; top: 0; left: 0; right: 0; height: 100vh;
-  z-index: 5; pointer-events: none;
-  background: radial-gradient(ellipse 60% 55% at 72% 48%, rgba(4,6,13,.45), transparent 70%);
+/* portrait: printed-editorial feel, no blend/rim/glow */
+.v4-portrait {
+  filter: sepia(.08) contrast(1.02);
+  will-change: transform, opacity;
 }
-@media (max-width: 768px) {
-  .v3-hero-scrim {
-    background: linear-gradient(180deg, rgba(4,6,13,.25), rgba(4,6,13,.6) 45%, rgba(4,6,13,.25) 80%);
-  }
+/* mobile: bottom scrim so hero text wins over the portrait behind it */
+.v4-portrait-scrim {
+  -webkit-mask-image: linear-gradient(180deg, black 62%, transparent 100%);
+  mask-image: linear-gradient(180deg, black 62%, transparent 100%);
 }
 
-/* ─────────────────────────────────────────────────────────────────────────
-   v3.1 — "ALIVE" hero: aurora background + duotone portrait as artwork
-   (append-only, /v3 only). Round 3.
-   ───────────────────────────────────────────────────────────────────────── */
+/* status pill */
+.v4-status {
+  border-radius: 999px;
+  font-family: ui-monospace, monospace;
+  font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+  padding: .3rem .7rem; border: 1px solid rgba(236,233,226,.14);
+}
+.v4-status-live { color: #e0a458; border-color: rgba(224,164,88,.4); }
+.v4-status-lab  { color: #6ab0d8; border-color: rgba(106,176,216,.4); }
+.v4-status-shipped { color: #b8bdc7; }
 
-/* Aurora: colour-blob field pinned to the hero viewport. Sits at z-0 (like the
-   backdrop photo) so the KMScene canvas + content paint above it. Its own
-   stacking context; transform-only keyframes = GPU-cheap. */
-.v3-aurora {
-  position: absolute; top: 0; left: 0; right: 0; height: 100vh;
-  z-index: 0; overflow: hidden; pointer-events: none;
-  /* isolate so mix-blend on the ocean texture stays inside the aurora */
-  isolation: isolate;
+/* clip-path reveal for the page-load name lines */
+@keyframes v4-riseclip {
+  from { clip-path: inset(0 0 100% 0); transform: translateY(14px); }
+  to   { clip-path: inset(0 0 0 0);    transform: translateY(0); }
 }
-/* low-opacity ocean texture for realness, blended so colour reads on top */
-.v3-aurora-tex {
-  position: absolute; inset: 0;
-  background-size: cover; background-position: 50% 60%;
-  opacity: .2; mix-blend-mode: luminosity;
-}
-.v3-blob {
-  position: absolute; border-radius: 50%;
-  filter: blur(120px); mix-blend-mode: screen;
-  will-change: transform;
-}
-.v3-blob-violet {
-  width: 62vw; height: 62vw; left: -8vw; top: -14vh;
-  background: radial-gradient(circle, rgba(157,107,255,.9), transparent 68%);
-  opacity: .42; animation: v3-drift-a 24s ease-in-out infinite alternate;
-}
-.v3-blob-cyan {
-  width: 54vw; height: 54vw; right: -6vw; top: 2vh;
-  background: radial-gradient(circle, rgba(75,225,255,.85), transparent 68%);
-  opacity: .40; animation: v3-drift-b 32s ease-in-out infinite alternate;
-}
-.v3-blob-rose {
-  width: 50vw; height: 50vw; left: 18vw; bottom: -22vh;
-  background: radial-gradient(circle, rgba(255,92,138,.8), transparent 68%);
-  opacity: .34; animation: v3-drift-c 40s ease-in-out infinite alternate;
-}
-/* soft floor so the aurora fades into the site body below the hero */
-.v3-aurora::after {
-  content: ""; position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(180deg, transparent 40%, rgba(4,6,13,.55) 78%, #04060d 100%);
-}
-@keyframes v3-drift-a {
-  from { transform: translate3d(0,0,0) scale(1); }
-  to   { transform: translate3d(6vw,7vh,0) scale(1.12); }
-}
-@keyframes v3-drift-b {
-  from { transform: translate3d(0,0,0) scale(1.05); }
-  to   { transform: translate3d(-7vw,5vh,0) scale(.92); }
-}
-@keyframes v3-drift-c {
-  from { transform: translate3d(0,0,0) scale(1); }
-  to   { transform: translate3d(5vw,-8vh,0) scale(1.15); }
+.v4-rise {
+  animation: v4-riseclip .7s cubic-bezier(.2,.8,.2,1) both;
 }
 
-/* Duotone portrait as background art: screen-blends into the design (dark
-   pixels ≈ bg → vanish). NO rim, NO border. Masked to fade bottom + outer
-   edge so it melts rather than ending in a sticker cut. */
-.v3-duotone {
-  mix-blend-mode: screen;
-  -webkit-mask-image:
-    linear-gradient(180deg, black 62%, transparent 100%),
-    linear-gradient(90deg, transparent 0%, black 26%, black 100%);
-  mask-image:
-    linear-gradient(180deg, black 62%, transparent 100%),
-    linear-gradient(90deg, transparent 0%, black 26%, black 100%);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-  will-change: transform, filter, opacity;
+/* floating status-card idle drift */
+@keyframes v4-float {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-6px); }
 }
-/* mobile: face fades on the inner (text-facing) edge instead of outer */
-.v3-duotone-mobile {
-  mix-blend-mode: screen; opacity: .85;
-  -webkit-mask-image:
-    linear-gradient(180deg, black 60%, transparent 100%),
-    linear-gradient(270deg, transparent 0%, black 34%, black 100%);
-  mask-image:
-    linear-gradient(180deg, black 60%, transparent 100%),
-    linear-gradient(270deg, transparent 0%, black 34%, black 100%);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-  will-change: transform, filter, opacity;
-}
-
-/* alive: slow drift of the "Madhan" gradient fill */
-.v3-alive-grad {
-  background-size: 220% 100%;
-  animation: v3-grad-drift 14s ease-in-out infinite alternate;
-}
-@keyframes v3-grad-drift {
-  from { background-position: 0% 50%; }
-  to   { background-position: 100% 50%; }
-}
-/* alive: LIVE-strip LEDs pulse (staggered via inline animation-delay) */
-.v3-led-pulse { animation: v3-led-pulse 2.2s ease-in-out infinite; }
-@keyframes v3-led-pulse {
-  0%, 100% { opacity: .55; box-shadow: 0 0 4px rgba(55,243,154,.6); }
-  50%      { opacity: 1;   box-shadow: 0 0 10px rgba(55,243,154,1); }
-}
-/* alive: scroll cue gentle bounce */
-.v3-scroll-cue { animation: v3-bounce 2.4s ease-in-out infinite; }
-@keyframes v3-bounce {
-  0%, 100% { transform: translateY(0); opacity: .7; }
-  50%      { transform: translateY(6px); opacity: 1; }
-}
+.v4-float { animation: v4-float 6s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .v3-blob,
-  .v3-alive-grad,
-  .v3-led-pulse,
-  .v3-scroll-cue { animation: none !important; }
+  .v4-rise, .v4-float, .v4-led-pulse { animation: none !important; }
+  .v4-rise { clip-path: none !important; transform: none !important; }
 }

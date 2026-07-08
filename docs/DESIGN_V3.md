@@ -162,3 +162,10 @@ Dark pixels ≈ site bg, so `mix-blend-mode: screen` melts it into the design.
    13-mobile-midscroll.png (390×844, scrolled ~60vh — must visibly show the
    rotation mid-state vs 11). Commit "design(v3.1): alive hero — aurora +
    duotone portrait".
+
+---
+
+## Round 4 → superseded by docs/DESIGN_V4.md
+Madhan rejected the v3.1 duotone/aurora look ("cheap AI-generated avatar").
+The premium kinetic editorial redesign lives in DESIGN_V4.md (same /v3 route,
+same hard rules). This file stays as history of rounds 1–3.

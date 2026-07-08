@@ -1,55 +1,36 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import {
-  About, Contact, Footer, Hero, Nav, OffDuty, Projects, Roots, Skills, Timeline, Work,
-} from "./sections3";
-import { ChapterHUD, CommandPalette, CursorGlow, ScrollHUD, SmoothScroll } from "@/components/ui";
+  Contact, Footer, Hero, Lab, Nav, Professional, Roots, Systems,
+} from "./sectionsV4";
 
-const KMScene = dynamic(() => import("@/components/scene/KMScene"), { ssr: false });
+// v4 forked scene — neutralised palette, imports only ./scene/* (never the
+// originals under src/components/scene, which the live "/" page still uses).
+const KMSceneV4 = dynamic(() => import("./scene/KMSceneV4"), { ssr: false });
 
 export const metadata: Metadata = {
-  title: "Krishna Madhan — Operator Edition (v3 preview)",
+  title: "Krishna Madhan — Premium Kinetic Editorial (v3 preview)",
   robots: { index: false, follow: false },
 };
 
 export default function V3Page() {
   return (
-    <>
-      {/* v3.1 ALIVE hero: aurora colour field replaces the flat dark backdrop.
-          MUST appear before <KMScene /> in the DOM: it is z-0, the KMScene
-          canvas is also z-0 but a later sibling, so the wireframe core paints
-          ABOVE the aurora. Three drifting colour blobs (screen-blended) over a
-          low-opacity ocean texture for realness. Static under reduced-motion. */}
-      <div className="v3-aurora" aria-hidden>
-        <div className="v3-aurora-tex" style={{ backgroundImage: "url(/photos/hero-bg-ocean.webp)" }} />
-        <div className="v3-blob v3-blob-violet" />
-        <div className="v3-blob v3-blob-cyan" />
-        <div className="v3-blob v3-blob-rose" />
-      </div>
-      <div className="vignette" aria-hidden />
-      <div className="grid-floor" aria-hidden />
-      <KMScene />
-      {/* Tames the core actor's bloom in the hero only: sits above the canvas
-          (z-[5]) but below content (z-10); absolute, so it scrolls away. */}
-      <div className="v3-hero-scrim" aria-hidden />
-      <SmoothScroll />
-      <CursorGlow />
-      <ScrollHUD />
-      <ChapterHUD />
-      <CommandPalette />
+    <div className="v4-root">
+      {/* backdrop: flat charcoal + faint radial warmth + fine grain. No blobs,
+          no photo. The forked scene canvas paints above these (z-0 sibling). */}
+      <div className="v4-atmos" aria-hidden />
+      <div className="v4-grain" aria-hidden />
+      <KMSceneV4 />
       <Nav />
       <main className="relative z-10">
         <Hero />
-        <About />
-        <Work />
-        <Projects />
-        <Timeline />
-        <Skills />
-        <OffDuty />
+        <Systems />
+        <Professional />
+        <Lab />
         <Roots />
         <Contact />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
