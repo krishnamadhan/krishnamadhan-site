@@ -27,7 +27,7 @@ export const viewport: Viewport = { themeColor: "#04060d" };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${body.variable} ${display.variable}`}>
-      <body className="vignette">
+      <body>
         <a href="#about" className="skip-link">Skip to content</a>
         {children}
       </body>

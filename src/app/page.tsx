@@ -9,6 +9,7 @@ const KMScene = dynamic(() => import("@/components/scene/KMScene"), { ssr: false
 export default function Home() {
   return (
     <>
+      <div className="vignette" aria-hidden />
       <div className="grid-floor" aria-hidden />
       <KMScene />
       <SmoothScroll />

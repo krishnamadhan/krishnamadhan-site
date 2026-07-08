@@ -29,6 +29,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
 
   return (
     <main className="relative z-10 min-h-screen px-[6vw] py-28">
+      <div className="vignette" aria-hidden />
       <div className="grid-floor" aria-hidden />
       <div className="max-w-3xl mx-auto">
         <Link href="/#projects"
