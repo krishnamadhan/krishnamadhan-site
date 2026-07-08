@@ -228,6 +228,12 @@ function HeroKinetic() {
     const ramp = Math.min(v / 0.6, 1);
     const fall = 1 - Math.min(Math.max((v - 0.62) / 0.34, 0), 1);
     v5Store.energy = ramp * ramp * (3 - 2 * ramp) * fall;
+    // phase-3 slice bloom: swells as the tear opens (~.64→.82), eases back to 0
+    // by the end so the field hands cleanly to the Systems anchor. This is what
+    // makes the core scatter and pass THROUGH the tear into the substrate.
+    const up = Math.min(Math.max((v - 0.64) / 0.18, 0), 1);
+    const down = 1 - Math.min(Math.max((v - 0.9) / 0.1, 0), 1);
+    v5Store.slice = up * up * (3 - 2 * up) * down;
   });
 
   // pointer parallax ±6px on cards/portrait
@@ -278,7 +284,7 @@ function HeroKinetic() {
 
   return (
     <section id="top" ref={ref} className="relative min-h-[220vh]">
-      <div className="sticky top-0 h-screen overflow-hidden flex items-end md:items-center">
+      <div className="sticky top-0 h-screen overflow-hidden flex items-end md:items-center relative">
         {/* MOBILE portrait — top-right under the nav, face fully visible */}
         <motion.div
           style={{ x: px, y: py }}
@@ -381,18 +387,24 @@ function HeroKinetic() {
               );
             })}
           </motion.div>
-
-          <LiveLab />
         </div>
+
+        {/* LIVE strip — pinned to the viewport bottom (not the centred content
+            column) so it always clears the CTA row on desktop + short heights */}
+        <LiveLab />
 
         {/* ── editorial slice: reveals the Systems substrate beneath the hero ── */}
         <motion.div style={{ clipPath: clip, WebkitClipPath: clip, opacity: substrateOpacity }}
           className="absolute inset-0 z-30 v5-substrate" aria-hidden>
           <div className="v5-substrate-grid" />
+          <div className="v5-substrate-scan" />
           <div className="mx-auto max-w-6xl h-full px-5 md:px-8 flex flex-col justify-center">
             <motion.div style={{ y: subLabelY, opacity: subLabelOpacity }}>
               <p className="v4-mlabel mb-4 !text-v4-amber">{v4.systems.label}</p>
               <h2 className="v4-display text-[clamp(2.6rem,7vw,5rem)] text-v4-ink leading-[0.92]">{v4.systems.title}</h2>
+              <p className="mt-6 v4-mono text-[11px] tracking-[0.22em] text-v4-mute/80 flex items-center gap-2.5">
+                <span className="v4-led v4-led-blue" aria-hidden /> SUBSTRATE LAYER · SYSTEMS ONLINE
+              </p>
             </motion.div>
           </div>
         </motion.div>

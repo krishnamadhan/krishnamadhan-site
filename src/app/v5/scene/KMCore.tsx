@@ -17,7 +17,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { buildFormations } from "./formations";
-import { ANCHORS, updateFieldFromScroll, v5Store } from "./store";
+import { ANCHORS, lerp, updateFieldFromScroll, v5Store } from "./store";
 
 /* ── adaptive particle count: viewport + a cheap core-count probe ── */
 function pickCount() {
@@ -128,14 +128,23 @@ function Field({ count }: { count: number }) {
     const kSlow = 1 - Math.pow(0.02, dt);   // placement / dim
     const kMorph = 1 - Math.pow(0.015, dt); // particle morph
 
-    // placement + brightness
-    c.gx += (v5Store.gx - c.gx) * kSlow;
-    c.gy += (v5Store.gy - c.gy) * kSlow;
-    c.gs += (v5Store.gs - c.gs) * kSlow;
-    c.dim += (v5Store.dim - c.dim) * kSlow;
+    // placement + brightness — during the phase-3 slice the core is drawn
+    // toward the tear "pool" (right-of-centre), held bright and scattered so it
+    // reads as passing THROUGH the tear rather than dimming away to the left.
+    const sl = v5Store.slice;
+    const gxTarget = lerp(v5Store.gx, 1.05, sl);
+    const gyTarget = lerp(v5Store.gy, -0.05, sl);
+    const gsTarget = lerp(v5Store.gs, 1.16, sl);
+    const dimTarget = Math.max(v5Store.dim, sl * 0.95);
+    c.gx += (gxTarget - c.gx) * kSlow;
+    c.gy += (gyTarget - c.gy) * kSlow;
+    c.gs += (gsTarget - c.gs) * kSlow;
+    c.dim += (dimTarget - c.dim) * kSlow;
     c.mx += (v5Store.mx - c.mx) * kSlow;
     c.my += (v5Store.my - c.my) * kSlow;
-    const expandTarget = v5Store.fA === 0 ? v5Store.energy * 0.2 : 0;
+    const bloom = Math.sin(Math.min(sl, 1) * Math.PI); // swell peaks mid-cross
+    const expandTarget =
+      (v5Store.fA === 0 ? v5Store.energy * 0.2 : 0) + sl * 0.5 + bloom * 0.35;
     c.expand += (expandTarget - c.expand) * kSlow;
     // broadcast pulse when the beacon (contact) formation is active
     const beaconTarget = (v5Store.fB === 5 && v5Store.ft > 0.4) || v5Store.fA === 5 ? 1 : 0;

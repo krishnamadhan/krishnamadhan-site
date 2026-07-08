@@ -326,22 +326,42 @@ a:focus-visible, button:focus-visible {
 }
 .v5-rise { animation: v5-riseclip .7s cubic-bezier(.2,.8,.2,1) both; }
 
-/* ── editorial slice substrate: the darker "layer underneath the OS" ── */
+/* ── editorial slice substrate: the darker "layer underneath the OS" ──
+   Not flat black: a translucent graphite with a light "pool" (right-of-centre)
+   where the substrate thins so the KM Core particle field — which passes THROUGH
+   the tear — glows up from beneath the grid. Reads as the layer under the OS. */
 .v5-substrate {
   background:
-    radial-gradient(70% 60% at 78% 30%, rgba(224,164,88,.06), transparent 70%),
-    #070809;
-  /* 1px light seam that follows the animated clip-path edge */
-  filter: drop-shadow(-1.5px -1.5px 0 rgba(236,233,226,.55));
+    radial-gradient(120% 90% at 72% 40%, rgba(224,164,88,.05), transparent 55%),
+    radial-gradient(62% 58% at 68% 44%, rgba(10,11,14,.5), rgba(6,7,8,.965) 72%);
+  /* light seam that follows the animated clip-path edge — a crisp off-white
+     line plus a soft warm bloom, refined (no glitch / RGB split) */
+  filter:
+    drop-shadow(-1px -1px 0 rgba(236,233,226,.7))
+    drop-shadow(-2px -2px 7px rgba(224,164,88,.16));
 }
 .v5-substrate-grid {
-  position: absolute; inset: 0; pointer-events: none; opacity: .8;
+  position: absolute; inset: 0; pointer-events: none; opacity: .9;
   background-image:
-    linear-gradient(0deg, rgba(236,233,226,.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(236,233,226,.06) 1px, transparent 1px);
+    linear-gradient(0deg, rgba(236,233,226,.075) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(236,233,226,.075) 1px, transparent 1px);
   background-size: 46px 46px;
-  -webkit-mask-image: radial-gradient(90% 90% at 70% 45%, #000 30%, transparent 100%);
-  mask-image: radial-gradient(90% 90% at 70% 45%, #000 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(100% 100% at 68% 44%, #000 38%, transparent 100%);
+  mask-image: radial-gradient(100% 100% at 68% 44%, #000 38%, transparent 100%);
+}
+/* faint telemetry scan sweeping the revealed layer — quiet sign of life */
+.v5-substrate-scan {
+  position: absolute; left: 0; right: 0; top: 22%; height: 1px; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(106,176,216,.32), rgba(236,233,226,.14), transparent);
+  opacity: 0;
+  animation: v5-scan 7s ease-in-out infinite;
+}
+@keyframes v5-scan {
+  0%   { top: 22%; opacity: 0; }
+  18%  { opacity: .55; }
+  50%  { top: 76%; opacity: .5; }
+  82%  { opacity: 0; }
+  100% { top: 22%; opacity: 0; }
 }
 
 /* ── proof module frame ── */
@@ -435,5 +455,6 @@ a:focus-visible, button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .v5-rise, .v5-typing span, .v5-meter-fill, .v5-node-tick.on, .v5-live-dot,
   .v5-lb-lead, .v5-edge { animation: none !important; }
+  .v5-substrate-scan { animation: none !important; opacity: 0 !important; }
   .v5-rise { clip-path: none !important; transform: none !important; opacity: 1 !important; }
 }

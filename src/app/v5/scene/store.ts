@@ -44,6 +44,8 @@ export const v5Store = {
   heroP: 0,
   /** derived hero "energy" 0..1 — nucleus loosens / point size grows */
   energy: 0,
+  /** phase-3 slice bloom 0..1 — core scatters/brightens and crosses the tear */
+  slice: 0,
   /** formation blend: from index A to index B, eased fraction t */
   fA: 0, fB: 0, ft: 0,
   /** world placement targets (damped in useFrame) */
