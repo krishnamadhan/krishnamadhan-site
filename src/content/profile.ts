@@ -212,7 +212,7 @@ export const profile = {
       offduty: "\"one more over da\" — everyone, always",
     },
     cricketLine:
-      "Right-hand bat · tournament winner · 2 fantasy platforms built to settle arguments",
+      "Right-hand bat · tournament winner · 2 fantasy platforms built to settle arguments · arguments settled: ∞",
     rootsHill: "grew up under Arunachala",
     footerSignoff: "Built on the same Pi that runs the robot. 47°C, mostly.",
   },

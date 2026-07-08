@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import {
   About, Contact, Footer, Hero, Nav, OffDuty, Projects, Roots, Skills, Timeline, Work,
 } from "./sections3";
@@ -15,6 +16,13 @@ export const metadata: Metadata = {
 export default function V3Page() {
   return (
     <>
+      {/* Hero backdrop photo + scrim. MUST appear before <KMScene /> in the
+          DOM: it is z-0, the KMScene canvas is also z-0 but a later sibling, so
+          the wireframe core paints ABOVE this backdrop instead of under it. */}
+      <div className="v3-hero-bg" aria-hidden>
+        <Image src="/photos/hero-bg-ocean.webp" alt="" fill priority
+               sizes="100vw" className="object-cover object-[50%_66%] opacity-90" />
+      </div>
       <div className="vignette" aria-hidden />
       <div className="grid-floor" aria-hidden />
       <KMScene />

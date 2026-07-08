@@ -170,28 +170,34 @@ a:focus-visible, button:focus-visible {
   border-radius: 20px;
 }
 
-/* hero backdrop photo + scrim */
+/* hero backdrop photo + scrim.
+   Absolute, pinned to the top viewport only (not inset:0 of the whole page),
+   z-0 so the later-sibling KMScene canvas (also z-0) paints above it. */
 .v3-hero-bg {
-  position: absolute; inset: 0; z-index: 0; overflow: hidden;
-  pointer-events: none;
+  position: absolute; top: 0; left: 0; right: 0; height: 100vh;
+  z-index: 0; overflow: hidden; pointer-events: none;
 }
 .v3-hero-bg::after {
   content: ""; position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(4,6,13,.55), rgba(4,6,13,.92) 75%);
 }
 
-/* portrait cutout — subtle cyan rim via drop-shadow, no thick halo */
+/* portrait cutout — subtle cyan rim via drop-shadow, no thick halo.
+   Bottom fade so the cutout doesn't end in a hard horizontal cut mid-air. */
 .v3-cutout {
   filter: drop-shadow(0 0 22px rgba(75,225,255,.28))
           drop-shadow(0 22px 40px rgba(0,0,0,.55));
+  -webkit-mask-image: linear-gradient(180deg, black 76%, transparent 100%);
+  mask-image: linear-gradient(180deg, black 76%, transparent 100%);
   will-change: transform, filter, opacity;
 }
-/* faint ground-glow ellipse that ties the cutout into the scene */
+/* faint ground-glow ellipse that ties the cutout into the scene — a flat
+   floor pool under his feet, NOT a disc behind him. Kept subtle. */
 .v3-ground-glow {
-  position: absolute; bottom: 0; left: 50%;
-  width: 62%; height: 60px; transform: translateX(-50%);
+  position: absolute; bottom: 4px; left: 50%; z-index: -1;
+  width: 58%; height: 34px; transform: translateX(-50%);
   background: radial-gradient(ellipse at center, rgba(75,225,255,.22), transparent 70%);
-  filter: blur(10px); pointer-events: none;
+  filter: blur(12px); pointer-events: none;
 }
 
 /* live-lab status strip: green LEDs, monospace */

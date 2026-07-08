@@ -122,12 +122,9 @@ export function Hero() {
 
   return (
     <section ref={ref} id="top" className="relative min-h-screen flex items-center px-[6vw] pt-32 pb-16 overflow-hidden">
-      {/* real-photo backdrop + scrim */}
-      <div className="v3-hero-bg" aria-hidden>
-        <Image src="/photos/hero-bg-ocean.webp" alt="" fill priority
-               sizes="100vw" className="object-cover object-[50%_35%] opacity-90" />
-      </div>
-
+      {/* Hero backdrop is rendered in page.tsx (before <KMScene />) so the 3D
+          core paints above it. The <main> here is z-10; keeping the backdrop
+          here would cover the fixed z-0 canvas. */}
       <div className="relative z-10 max-w-6xl mx-auto w-full grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-8 items-center">
         {/* left: editorial */}
         <div>
@@ -189,7 +186,9 @@ export function Hero() {
                className="v3-cutout w-auto" style={{ height: "34vh" }} />
       </div>
 
-      <div className="absolute bottom-8 inset-x-[6vw] z-10 hidden md:flex items-center justify-center">
+      {/* Left-aligned with the copy column and lifted above the ChapterHUD pill
+          (bottom-center) so they no longer overlap. */}
+      <div className="absolute bottom-24 left-[6vw] z-10 hidden md:flex items-center">
         <span className="v3-mono coord animate-pulse text-cyan/70">SCROLL TO BOOT THE STORY ↓</span>
       </div>
     </section>
@@ -464,15 +463,10 @@ export function OffDuty() {
                 {life.cricket.title}
               </h3>
               <p className="v3-body text-base leading-relaxed mb-5">{life.cricket.body}</p>
-              <p className="v3-mono text-[12px] text-amber/90 tracking-[0.06em] mb-6">{v3.cricketLine}</p>
-              <ul className="space-y-2.5">
-                {life.cricket.stats.map((s) => (
-                  <li key={s} className="flex items-center gap-3 text-sm text-[#e8edf7]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber shadow-[0_0_10px_rgba(255,180,84,.9)]" />
-                    {s}
-                  </li>
-                ))}
-              </ul>
+              {/* Single amber stat row — the old 3-bullet list was a duplicate
+                  and has been removed; the "arguments settled: ∞" joke is
+                  appended to the end of this row so it survives. */}
+              <p className="v3-mono text-[12px] text-amber/90 tracking-[0.06em] mb-2">{v3.cricketLine}</p>
             </div>
           </div>
         </Reveal>
