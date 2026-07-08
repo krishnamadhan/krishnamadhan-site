@@ -114,6 +114,84 @@ export const profile = {
     text: "I come from Tiruvannamalai, and staying useful to the place you come from matters to me. I care about community-oriented, real-world impact — and I'm working out what that looks like when you can build software, AI and machines.",
     todo: "TODO: add verified public sources before naming any trust/organization.",
   },
+  /** Deep-dive content for /projects/[slug]. Keyed by project slug.
+   *  `classified: true` renders a "details stay at work" note instead of internals. */
+  caseStudies: {
+    "banter-agent": {
+      brief: [
+        "Banter Agent is an AI companion that lives inside my friend group's WhatsApp — not a demo bot, a resident. It speaks Tanglish, runs group games, roasts on request, digests the news, and remembers who said what. It has been online continuously for months, which means it has survived the harshest QA environment known to engineering: a friend group that wants to break it.",
+        "It runs on the same Raspberry Pi 5 as everything else in the lab, which turns every feature into an exercise in doing more with a fixed RAM budget.",
+      ],
+      system: [
+        { title: "WhatsApp Gateway", desc: "A long-lived multi-device web session is the bot's identity. The process holding it is irreplaceable — losing the session means re-pairing the account." },
+        { title: "Personality + Memory", desc: "Tanglish personality modes layered over per-user and per-group memory in Supabase, so callbacks and running jokes actually land." },
+        { title: "Game Engine", desc: "17 group games with shared scheduling, state persistence and leaderboards — built to survive restarts mid-game." },
+        { title: "LLM Layer", desc: "Claude drives conversation and games behind token budgets and rate guards, because a chatty friend group can burn an API budget by lunchtime." },
+      ],
+      fieldNotes: [
+        { title: "The process you can never restart", desc: "The WhatsApp auth session lives in one process and does not survive casual restarts. So deploys got redesigned around it: features ship staged-and-dormant, then activate on the next natural restart. Deployment discipline enforced by consequences." },
+        { title: "Friends are ruthless QA", desc: "Every edge case gets found within hours, and every regression gets screenshots in the group chat. It is the tightest feedback loop I have ever shipped against." },
+      ],
+      telemetry: [
+        { k: "RUNTIME", v: "24/7 on a Raspberry Pi 5" },
+        { k: "GAMES", v: "17 and counting" },
+        { k: "QA TEAM", v: "One unpaid, merciless friend group" },
+      ],
+    },
+    "robot-pet": {
+      brief: [
+        "Cosmo is an attempt to make a machine feel like a pet instead of a chatbot on wheels. It has moods that drift with time and interaction, energy that follows a circadian rhythm, and an episodic memory of the people it meets — so how it behaves depends on how its day has gone and who walked in.",
+        "Everything runs locally on a Raspberry Pi 5 except the language brain, with an ESP32-S3 as a sensor co-processor handling the low-level hardware.",
+      ],
+      system: [
+        { title: "Decision Core", desc: "A behavior tree (56 nodes) is the sole decision authority, fed by a prioritized async event bus. One action router owns every actuator, so behaviors can't fight over hardware." },
+        { title: "Personality Engine", desc: "Mood, energy, arousal and attachment as decaying state variables. Nothing is scripted — the same stimulus lands differently on a tired robot." },
+        { title: "Perception", desc: "Camera person-detection with YOLO, face recognition, and emotion reading; wake-word → speech-to-text → Claude → text-to-speech for conversation." },
+        { title: "Memory", desc: "Episodic memory in SQLite, working memory with a 5-minute TTL, and spatial fingerprints of rooms — it remembers meeting you." },
+        { title: "Hardware Layer", desc: "An ESP32-S3 co-processor speaks JSON over serial and owns motors and a dozen sensor types, keeping timing-critical hardware off the Pi." },
+      ],
+      fieldNotes: [
+        { title: "The blue robot incident", desc: "The camera library hands frames over BGR while claiming RGB. Old code corrected it, new code corrected it again, and every face the robot enrolled was learned on colour-swapped frames. Lesson: verify at the boundary, not downstream." },
+        { title: "RAM is the real currency", desc: "An 8GB Pi hosting a robot, a chatbot and a kanban board has no room for PyTorch. Swapping to ONNX Runtime saved ~160MB — and exposed that the fancy detector had silently fallen back to a 2005-era algorithm months earlier." },
+        { title: "Colour is a calibration problem", desc: "The TV ambilight only produces believable colour at one exact white-balance lock, solved via colour-correction matrix against reference cards. The system now detects drift and heals itself." },
+      ],
+      telemetry: [
+        { k: "DECISIONS", v: "56-node behavior tree" },
+        { k: "SENSORS", v: "12+ types across Pi + ESP32" },
+        { k: "MOODS", v: "Genuinely unpredictable" },
+      ],
+    },
+    "ai-coding-workflows": {
+      brief: [
+        "What happens if you give AI coding agents a real engineering process instead of a prompt box? This is a kanban board where the teammates are AI: Claude Code plays scrum master on the Raspberry Pi, Codex plays engineer from a PC over SSH, and work moves through backlog → claimed → review → done with actual gates at each step.",
+        "Tasks carry leases so agents can't hoard work, journals so decisions survive context loss, and a daily standup that lands in WhatsApp every morning at 10:00.",
+      ],
+      system: [
+        { title: "Task Board", desc: "File-based kanban with a CLI and a web UI — every task is a markdown file with state, priority, owner and a full journal of what happened." },
+        { title: "Agent Contracts", desc: "Each agent works under a written contract defining what it may claim, when it must hand off, and what review requires. Process documents, but for machines." },
+        { title: "Review Gates", desc: "Code moves on named branches and nothing merges without cross-agent review — the scrum master reviews the engineer's work like a real team." },
+        { title: "Drift Watch", desc: "Cron-driven checks compare docs against reality and the board against the repos, because agents (like people) let documentation rot." },
+      ],
+      fieldNotes: [
+        { title: "Agents need process more than prompts", desc: "Unattended agents fail in human ways: stale claims, undocumented decisions, drifting docs. The fixes are also human — leases, journals, standups. Management theory turned out to be transferable." },
+        { title: "The handoff is the hard part", desc: "Two agents that are individually excellent still fumble handoffs without a written contract for what 'ready for review' means. Interfaces between agents deserve the same rigor as interfaces between services." },
+      ],
+      telemetry: [
+        { k: "AGENTS", v: "2 — scrum master + engineer" },
+        { k: "STANDUP", v: "Daily 10:00 IST, via WhatsApp" },
+        { k: "HUMAN ROLE", v: "Product owner only" },
+      ],
+    },
+    "data-platform-automation": {
+      brief: [
+        "The professional half of the lab: cloud infrastructure and data platform engineering — provisioning AWS estates as code, building ETL and serverless processing that feeds data-mesh architectures, and the automation and data-quality guardrails that keep platforms trustworthy at scale.",
+      ],
+      classified: true,
+      system: [],
+      fieldNotes: [],
+      telemetry: [],
+    },
+  },
   contact: {
     heading: "Let's build something useful, weird, and future-facing.",
     // TODO: replace all placeholders with real URLs before publishing
@@ -128,3 +206,12 @@ export const profile = {
 } as const;
 
 export type Profile = typeof profile;
+
+export type CaseStudy = {
+  brief: readonly string[];
+  /** true → internals are intentionally withheld (work project) */
+  classified?: boolean;
+  system: readonly { title: string; desc: string }[];
+  fieldNotes: readonly { title: string; desc: string }[];
+  telemetry: readonly { k: string; v: string }[];
+};

@@ -279,7 +279,7 @@ export function Projects() {
                   ))}
                 </div>
                 <span className={`text-[11px] tracking-[0.2em] uppercase ${ACCENT_TEXT[p.accent]} opacity-80`}>
-                  {p.featured ? "Flagship module →" : "Case study soon →"}
+                  {p.featured ? "Flagship module →" : "Open case study →"}
                 </span>
               </TiltCard>
               </a>

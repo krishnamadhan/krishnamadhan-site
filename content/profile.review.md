@@ -17,4 +17,13 @@
 ## Assets
 7. **Photos** — all 5 are Madhan's own (personal license OK); graded copies in
    public/photos/. Confirm the ocean/shirtless shot stays (it's tasteful but personal).
-8. **Case-study routes** — /projects/* are "coming soon" shells; no claims added.
+8. **Case-study routes** — /projects/* now have real deep-dive content
+   (profile.ts → caseStudies). Skim before publish, especially:
+   - Banter Agent: "online continuously for months", "17 games" — confirm current.
+   - Robot pet: "56-node behavior tree", "12+ sensor types" — drawn from repo state
+     2026-07; hardware described includes sensors coded but not yet wired (the copy
+     stays design-level, but confirm comfort).
+   - AI workflows: describes the AgentBoard two-agent setup — confirm you're happy
+     making this public.
+   - Data Platform Automation stays broad-strokes with an explicit
+     "internals stay at work" panel — nothing beyond the existing public-safe tags.
