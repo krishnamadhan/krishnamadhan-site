@@ -27,7 +27,7 @@ export type Chapter = {
  * over these, so `dim` stays low behind the text-heavy sections.
  */
 export const CHAPTERS: Chapter[] = [
-  { id: "core",    section: "top",          label: "KM CORE",         actor: 0, x: -2.6, y: 0.4,  scale: 0.95, glow: 0.7,  warmth: 0.15, dim: 0.9 },
+  { id: "core",    section: "top",          label: "KM CORE",         actor: 0, x: -3.5, y: 0.0,  scale: 0.95, glow: 0.5,  warmth: 0.15, dim: 0.9 },
   { id: "network", section: "systems",      label: "SYSTEMS GRID",    actor: 2, x: 3.1,  y: 0.85, scale: 0.6,  glow: 0.55, warmth: 0.1,  dim: 0.24 },
   { id: "rocket",  section: "professional", label: "LAUNCH SEQUENCE", actor: 4, x: 3.5,  y: 0.0,  scale: 0.66, glow: 0.45, warmth: 0.2,  dim: 0.22 },
   { id: "atom",    section: "professional", label: "STACK ORBITALS",  actor: 5, x: -3.5, y: 0.5,  scale: 0.6,  glow: 0.5,  warmth: 0.25, dim: 0.2 },

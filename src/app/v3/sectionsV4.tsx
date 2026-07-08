@@ -219,7 +219,7 @@ export function Hero() {
         </motion.div>
       </motion.div>
 
-      <div className="mx-auto max-w-6xl w-full px-5 md:px-8 pt-[42vh] pb-24 md:pt-28 md:pb-0 md:py-0 relative">
+      <div className="mx-auto max-w-6xl w-full px-5 md:px-8 pt-[42vh] pb-24 md:pt-28 md:pb-28 relative">
         {/* mobile-only scrim: sits UNDER the text band (starts below the face
             zone) so the copy always wins at 390px without dimming his face. */}
         <div
@@ -272,8 +272,9 @@ export function Hero() {
           <span className="sr-only">{v4.hero.lineA} {v4.hero.lineB}</span>
         </div>
 
-        {/* positioning + concrete line */}
-        <div className="relative z-20 mt-8 max-w-xl">
+        {/* positioning + concrete line — constrained so copy clears the
+            portrait's left edge at 1280–1600 (never runs under the arm). */}
+        <div className="relative z-20 mt-8 max-w-xl md:max-w-[29rem]">
           <Reveal delay={0.35}>
             <p className="text-[19px] md:text-[21px] text-v4-ink leading-snug">
               {v4.hero.positioning}
@@ -286,8 +287,8 @@ export function Hero() {
           </Reveal>
         </div>
 
-        {/* credibility strip */}
-        <Reveal delay={0.55} className="relative z-20 mt-7 max-w-2xl">
+        {/* credibility strip — same clear-of-portrait width as the copy */}
+        <Reveal delay={0.55} className="relative z-20 mt-7 max-w-2xl md:max-w-[29rem]">
           <div className="v4-hairline mb-3" />
           <p className="v4-mono text-[11px] tracking-[0.08em] text-v4-mute leading-relaxed">
             {v4.hero.credibility.join("  ·  ")}
