@@ -370,6 +370,24 @@ export const profile = {
       { label: "Contact", href: "#contact" },
     ],
   },
+  /** v5 — "Kinetic Lab OS". Additive only. Reuses v4 copy by reference in the
+   *  sections file; this key holds only the new hero-phase + proof strings. */
+  v5: {
+    boot: "KM·OS 26.5 — kinetic lab OS · booted from a Raspberry Pi 5 in a Bangalore living room.",
+    heroTelemetry: "SYSTEM ONLINE",
+    heroPhaseLabels: ["IDENTITY LOCK", "SYSTEM ACTIVATION", "ENTERING SYSTEMS"],
+    proofNote: "REPRESENTATIVE TELEMETRY",
+    /** per systems-card proof caption, keyed by card index 0..4 */
+    proofCaptions: [
+      "MESSAGE TRACE",
+      "BEHAVIOUR TELEMETRY",
+      "LIVE LEADERBOARD",
+      "AUCTION BOARD",
+      "SYSTEM ARCHITECTURE",
+    ],
+    proofAssetTodo: "demo / GitHub — real capture pending",
+    footerBadge: "KM·OS 26.5",
+  },
   contact: {
     heading: "Let's build something useful, weird, and future-facing.",
     // TODO: replace all placeholders with real URLs before publishing

@@ -312,3 +312,128 @@ a:focus-visible, button:focus-visible {
   .v4-rise, .v4-float, .v4-led-pulse { animation: none !important; }
   .v4-rise { clip-path: none !important; transform: none !important; }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   v5 — "Kinetic Lab OS" (append-only, /v5 only). Round 6.
+   Builds on the v4 graphite palette. Sticky-hero slice substrate, five
+   abstract proof modules, and the hero-copy rise. No new colours.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* hero copy clip-rise (mirrors v4-rise, scoped name so v3 stays untouched) */
+@keyframes v5-riseclip {
+  from { clip-path: inset(0 0 100% 0); transform: translateY(14px); opacity: 0; }
+  to   { clip-path: inset(0 0 0 0);    transform: translateY(0);    opacity: 1; }
+}
+.v5-rise { animation: v5-riseclip .7s cubic-bezier(.2,.8,.2,1) both; }
+
+/* ── editorial slice substrate: the darker "layer underneath the OS" ── */
+.v5-substrate {
+  background:
+    radial-gradient(70% 60% at 78% 30%, rgba(224,164,88,.06), transparent 70%),
+    #070809;
+  /* 1px light seam that follows the animated clip-path edge */
+  filter: drop-shadow(-1.5px -1.5px 0 rgba(236,233,226,.55));
+}
+.v5-substrate-grid {
+  position: absolute; inset: 0; pointer-events: none; opacity: .8;
+  background-image:
+    linear-gradient(0deg, rgba(236,233,226,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(236,233,226,.06) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(90% 90% at 70% 45%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(90% 90% at 70% 45%, #000 30%, transparent 100%);
+}
+
+/* ── proof module frame ── */
+.v5-proof {
+  position: relative; overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: #14161b;
+  border: 1px solid rgba(236,233,226,.10);
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 14px 40px rgba(0,0,0,.4);
+  transition: border-color .25s ease, box-shadow .25s ease;
+}
+.group:hover .v5-proof,
+.v4-listcard:hover .v5-proof {
+  border-color: rgba(236,233,226,.2);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 18px 48px rgba(0,0,0,.5);
+}
+.v5-proof-scan {
+  position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background-image: radial-gradient(rgba(236,233,226,.05) 1px, transparent 1px);
+  background-size: 7px 7px;
+}
+.v5-mono2 {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 10px; letter-spacing: .04em;
+}
+
+/* 01 · whatsapp trace */
+.v5-bubble {
+  position: relative; max-width: 82%;
+  display: inline-flex; align-items: baseline; gap: .5rem;
+  padding: .4rem .6rem; border-radius: 10px;
+  font-size: 11.5px; line-height: 1.25;
+  border: 1px solid rgba(236,233,226,.08);
+}
+.v5-bubble-in  { background: #1b1e24; border-top-left-radius: 3px; }
+.v5-bubble-out { background: #223142; border-top-right-radius: 3px; }
+.v5-tick { font-family: ui-monospace, monospace; font-size: 8.5px; }
+.v5-typing { display: inline-flex; gap: 4px; padding: .5rem .6rem; }
+.v5-typing span {
+  width: 5px; height: 5px; border-radius: 50%; background: #7c828d;
+  animation: v5-typing 1.2s ease-in-out infinite;
+}
+.v5-typing span:nth-child(2) { animation-delay: .18s; }
+.v5-typing span:nth-child(3) { animation-delay: .36s; }
+@keyframes v5-typing { 0%,60%,100% { opacity: .3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+
+/* 02 · robot telemetry */
+.v5-meter { display: block; height: 6px; border-radius: 999px; background: rgba(236,233,226,.08); overflow: hidden; }
+.v5-meter-fill { display: block; height: 100%; border-radius: 999px; animation: v5-meter 3.6s ease-in-out infinite alternate; }
+.v5-fill-amber { background: linear-gradient(90deg, rgba(224,164,88,.5), #e0a458); }
+.v5-fill-blue  { background: linear-gradient(90deg, rgba(106,176,216,.5), #6ab0d8); }
+@keyframes v5-meter { from { filter: brightness(.85); } to { filter: brightness(1.15); } }
+.v5-node-tick {
+  width: 8px; height: 8px; border-radius: 2px;
+  border: 1px solid rgba(236,233,226,.18); background: transparent;
+}
+.v5-node-tick.on { background: rgba(106,176,216,.5); border-color: rgba(106,176,216,.6); animation: v5-tick 2.4s ease-in-out infinite; }
+@keyframes v5-tick { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+
+/* 03 · live leaderboard */
+.v5-live { display: inline-flex; align-items: center; gap: 5px; font-family: ui-monospace, monospace; font-size: 9px; letter-spacing: .18em; color: #e0a458; }
+.v5-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #e0a458; box-shadow: 0 0 6px rgba(224,164,88,.7); animation: v4-led-pulse 1.6s ease-in-out infinite; }
+.v5-lb-row { display: flex; align-items: center; gap: .5rem; padding: .3rem .45rem; border-radius: 7px; border-bottom: 1px solid rgba(236,233,226,.05); }
+.v5-lb-lead { background: rgba(224,164,88,.08); border-bottom-color: transparent; animation: v5-lead 3s ease-in-out infinite; }
+@keyframes v5-lead { 0%,100% { background: rgba(224,164,88,.06); } 50% { background: rgba(224,164,88,.13); } }
+
+/* 04 · auction board */
+.v5-chip-card {
+  position: relative; display: flex; flex-direction: column; justify-content: center; gap: 2px;
+  padding: .35rem .45rem; border-radius: 8px;
+  background: #1b1e24; border: 1px solid rgba(236,233,226,.08);
+}
+.v5-chip-bid  { border-color: rgba(106,176,216,.4); }
+.v5-chip-sold { border-color: rgba(224,164,88,.5); background: rgba(224,164,88,.08); }
+.v5-sold-tag {
+  position: absolute; top: 4px; right: 4px;
+  font-family: ui-monospace, monospace; font-size: 7px; letter-spacing: .12em;
+  color: #e0a458; border: 1px solid rgba(224,164,88,.5); border-radius: 4px; padding: 1px 3px;
+}
+
+/* 05 · architecture grid */
+.v5-edge { stroke-dasharray: 3 3; animation: v5-flow 2.4s linear infinite; }
+@keyframes v5-flow { to { stroke-dashoffset: -12; } }
+.v5-arch-label {
+  position: absolute; transform: translate(-50%, 10px);
+  font-family: ui-monospace, monospace; font-size: 8.5px; letter-spacing: .06em;
+  color: #b8bdc7; white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v5-rise, .v5-typing span, .v5-meter-fill, .v5-node-tick.on, .v5-live-dot,
+  .v5-lb-lead, .v5-edge { animation: none !important; }
+  .v5-rise { clip-path: none !important; transform: none !important; opacity: 1 !important; }
+}
