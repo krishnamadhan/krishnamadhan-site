@@ -31,14 +31,14 @@
 
 ## Phase C — Verify + review
 - [x] C1. `npm run typecheck && npm run lint && npm run build`
-- [ ] C2. Screenshots per variant at 1440 / 1280 / 390 → `artifacts/kinetic/` (use docs/capture pattern, playwright-core)
-- [ ] C3. Score all 10 in `docs/KINETIC_VARIANTS_REVIEW.md` (9 axes, 1–10)
-- [ ] C4. Write final recommendation (best variant / hero / systems / mobile / visual language / merge plan)
+- [x] C2. Screenshots per variant at 1440 / 1280 / 390 → `artifacts/kinetic/` (use docs/capture pattern, playwright-core)
+- [x] C3. Score all 10 in `docs/KINETIC_VARIANTS_REVIEW.md` (9 axes, 1–10)
+- [x] C4. Write final recommendation (best variant / hero / systems / mobile / visual language / merge plan)
 
 ## Phase D — Convergence
-- [ ] D1. Build `/kinetic/final` from merge plan
-- [ ] D2. Verify acceptance criteria (see LOG header) + build + screenshots
-- [ ] D3. Final commit + LOG closeout
+- [x] D1. Build `/kinetic/final` from merge plan
+- [x] D2. Verify acceptance criteria (see LOG header) + build + screenshots
+- [x] D3. Final commit + LOG closeout
 
 ## Phase E — Continuity
 - [x] E1. `scripts/kinetic-status.sh` (log-only status + next-step printer) + hourly cron

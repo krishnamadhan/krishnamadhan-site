@@ -59,3 +59,19 @@ reduced-motion via framer `useReducedMotion`, DPR cap [1,1.5], mobile-light.
 - npm run build ✅ — /kinetic/v1..v10 all static, / and /v3 untouched. Note: lint not configured in repo (interactive prompt) — typecheck+build are the gates.
 - Perf note for review: v2/v3/v4/v8/v9 carry R3F in first load (359-364kB); v8/v9 only via useIsMobile import — trivial to split later.
 - NEXT STEP: C2 screenshots (1440/1280/390) via playwright-core, then C3 scoring.
+
+### 2026-07-10 03:05 — PHASE C+D COMPLETE ✅ /kinetic/final SHIPPED
+- 90 variant screenshots + 16 final screenshots in artifacts/kinetic/.
+- Scores in KINETIC_VARIANTS_REVIEW.md. Winners: v5 Magazine (82) > v1 Tear = v6 Pipeline (78) > v10 Living Room (74).
+- /kinetic/final = v5 paper magazine cover (type-behind-portrait, face clear at all widths)
+  → v1 jagged tear into the machine room → v6 pipeline (3 JPMC stages + 3 lab stations power on)
+  → v10 blueprint signature (self-draws on approach, room powers on) → contact.
+  158kB first load, NO R3F on the final route. Reduced-motion + mobile verified by screenshot.
+- Acceptance criteria: all met (memorable hero transformation ✅ physical tear ✅ identity in 5s ✅
+  proof-driven cards ✅ mobile ✅ reduced-motion ✅ build ✅ / and /v3 untouched ✅ no neon/purple ✅).
+- Bugs logged for variant polish (only if variants get promoted): v7 pupil centering, v8 dock spacing,
+  v2 cloth edge streak, v5 portrait/panel collision.
+- Server on :3210 stopped after capture. Hourly status cron stays until Madhan reviews; remove with
+  `crontab -e` (kinetic-status line) once /kinetic/final is approved.
+- NEXT STEP (Madhan): open /kinetic (index) on the LAN preview or Vercel preview, compare variants,
+  bless /kinetic/final or request merges. Then AB-043/AB-044 fold-in to main site.

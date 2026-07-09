@@ -47,7 +47,7 @@ export function KFrame({
           className="rounded-full border border-v4-line bg-v4-panel/85 px-3.5 py-1.5 font-display text-[11px] tracking-[0.14em] text-v4-body backdrop-blur transition-colors hover:text-v4-ink"
           aria-expanded={open}
         >
-          KINETIC {String(variant).padStart(2, "0")} · {v?.name.toUpperCase() ?? "FINAL"}
+          {variant === 0 ? "KINETIC ★ FINAL" : `KINETIC ${String(variant).padStart(2, "0")} · ${v?.name.toUpperCase() ?? "FINAL"}`}
         </button>
         {open && (
           <nav className="flex flex-col gap-px overflow-hidden rounded-xl border border-v4-line bg-v4-panel/95 backdrop-blur" aria-label="Variant switcher">
