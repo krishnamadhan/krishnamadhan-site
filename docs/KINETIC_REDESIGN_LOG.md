@@ -44,3 +44,10 @@ reduced-motion via framer `useReducedMotion`, DPR cap [1,1.5], mobile-light.
 - Shared: KFrame switcher, SystemCard+v5 proofs, CredStrip/LabStatus, SafeCanvas dpr[1,1.5].
 - E1 done: scripts/kinetic-status.sh + hourly cron (17 * * * *), log-only.
 - NEXT STEP: implement B5 /kinetic/v5 magazine cover (portrait z-sandwich type), then B6..B10.
+
+### 2026-07-10 01:20 — V5–V7 implemented (typecheck clean) + AB-049 delegated
+- v5 Magazine: KRISHNA behind portrait cutout / MADHAN in front (z-sandwich); scroll deconstructs cover → intro column + 3 rising proof panels.
+- v6 Pipeline: luminous spine + amber packets (motion values, no re-renders); 3 ETL stages + 3 lab systems power on as flow reaches them; flow-meter HUD.
+- v7 Field Log: Cosmo OLED eyes (pointer-tracking, blinking); sticky mood bar reacts per section (curious/excited/focused/attached); real field notes as dated entries.
+- Parallel: AB-049 voice-clone V1 delegated to codex (spec in board notes), AB-050 phase-2 filed blocked. Memory: project_voice_clone.md.
+- NEXT STEP: B8 /kinetic/v8 OS window physics, then B9 horizontal, B10 living room.
