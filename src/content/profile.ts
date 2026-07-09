@@ -390,10 +390,11 @@ export const profile = {
   },
   contact: {
     heading: "Let's build something useful, weird, and future-facing.",
-    // TODO: replace all placeholders with real URLs before publishing
+    // GitHub is live (verified handle). LinkedIn/X/Resume + email still need
+    // Madhan's real URLs before publish — see board AB-045.
     email: "hello@krishnamadhan.com",
     socials: [
-      { label: "GitHub", href: "#todo-github" },
+      { label: "GitHub", href: "https://github.com/krishnamadhan" },
       { label: "LinkedIn", href: "#todo-linkedin" },
       { label: "X / Twitter", href: "#todo-x" },
       { label: "Resume", href: "#todo-resume" },
