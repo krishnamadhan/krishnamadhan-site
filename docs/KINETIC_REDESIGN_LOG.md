@@ -51,3 +51,11 @@ reduced-motion via framer `useReducedMotion`, DPR cap [1,1.5], mobile-light.
 - v7 Field Log: Cosmo OLED eyes (pointer-tracking, blinking); sticky mood bar reacts per section (curious/excited/focused/attached); real field notes as dated entries.
 - Parallel: AB-049 voice-clone V1 delegated to codex (spec in board notes), AB-050 phase-2 filed blocked. Memory: project_voice_clone.md.
 - NEXT STEP: B8 /kinetic/v8 OS window physics, then B9 horizontal, B10 living room.
+
+### 2026-07-10 02:00 — ALL 10 VARIANTS BUILT ✅ (build clean, 28 routes)
+- v8 OS Physics: 6 draggable momentum windows scatter→dock over 300vh; menu bar with live lab status; mobile pre-docked.
+- v9 Horizontal: 400vw film strip, ghost numerals + title parallax, progress rail; mobile native vertical.
+- v10 Living Room: SVG blueprint of the actual lab self-draws (pathLength), 5 device callouts surface, room POWERS ON at p>0.88 (LED glows, TV lights, Cosmo eyes wake).
+- npm run build ✅ — /kinetic/v1..v10 all static, / and /v3 untouched. Note: lint not configured in repo (interactive prompt) — typecheck+build are the gates.
+- Perf note for review: v2/v3/v4/v8/v9 carry R3F in first load (359-364kB); v8/v9 only via useIsMobile import — trivial to split later.
+- NEXT STEP: C2 screenshots (1440/1280/390) via playwright-core, then C3 scoring.

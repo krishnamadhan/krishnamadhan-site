@@ -25,12 +25,12 @@
 - [x] B5. `/kinetic/v5` — Editorial Portrait Magazine Cover (type-behind-head masking; cover breaks into proof panels on scroll)
 - [x] B6. `/kinetic/v6` — Data Pipeline Scroll Machine (SVG spine, packets travel with scroll, stations activate cards)
 - [x] B7. `/kinetic/v7` — Robot Pet Field Log (Cosmo eyes follow pointer; mood-reactive sticky status; dated log entries)
-- [ ] B8. `/kinetic/v8` — OS Window Physics (windows drift → dock/snap on scroll; drag with inertia; elegant KM·OS chrome)
-- [ ] B9. `/kinetic/v9` — Cinematic Horizontal Scroll (sticky 400vw track, scene handoffs; native vertical on mobile)
-- [ ] B10. `/kinetic/v10` — Wildcard: "The Living Room" (SVG blueprint of the actual lab draws itself; zoom per device → system)
+- [x] B8. `/kinetic/v8` — OS Window Physics (windows drift → dock/snap on scroll; drag with inertia; elegant KM·OS chrome)
+- [x] B9. `/kinetic/v9` — Cinematic Horizontal Scroll (sticky 400vw track, scene handoffs; native vertical on mobile)
+- [x] B10. `/kinetic/v10` — Wildcard: "The Living Room" (SVG blueprint of the actual lab draws itself; zoom per device → system)
 
 ## Phase C — Verify + review
-- [ ] C1. `npm run typecheck && npm run lint && npm run build`
+- [x] C1. `npm run typecheck && npm run lint && npm run build`
 - [ ] C2. Screenshots per variant at 1440 / 1280 / 390 → `artifacts/kinetic/` (use docs/capture pattern, playwright-core)
 - [ ] C3. Score all 10 in `docs/KINETIC_VARIANTS_REVIEW.md` (9 axes, 1–10)
 - [ ] C4. Write final recommendation (best variant / hero / systems / mobile / visual language / merge plan)
