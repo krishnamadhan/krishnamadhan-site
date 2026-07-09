@@ -35,3 +35,12 @@ reduced-motion via framer `useReducedMotion`, DPR cap [1,1.5], mobile-light.
 - Phase A begun. Repo verified clean on master @ 9e582bb. Routes present: /, /v3, /v5, /styles/*, /projects/*.
 - Docs created: KINETIC_TASKS.md, this LOG, KINETIC_VARIANTS_REVIEW.md skeleton.
 - NEXT STEP: build `src/app/kinetic/_shared/` + `/kinetic` index, commit scaffolding (task A2/A3).
+
+### 2026-07-10 00:45 — V1–V4 implemented (typecheck clean)
+- v1 Page Tear: jagged clip-path halves peel apart over dark machine room; 320vh sticky; reduced-motion static path.
+- v2 Fabric: R3F cloth plane (portrait texture, left-edge pinned, scroll-velocity gust), wind-riding letters, velocity skew.
+- v3 Particles: 4.2k points torus-knot core → detonation → canvas-sampled "SYSTEMS" text; phase HUD.
+- v4 Lab Core: 5 modules morph monolith→orbit map→pipeline→robot(eyes)→beacon; sticky split; chapter progress.
+- Shared: KFrame switcher, SystemCard+v5 proofs, CredStrip/LabStatus, SafeCanvas dpr[1,1.5].
+- E1 done: scripts/kinetic-status.sh + hourly cron (17 * * * *), log-only.
+- NEXT STEP: implement B5 /kinetic/v5 magazine cover (portrait z-sandwich type), then B6..B10.

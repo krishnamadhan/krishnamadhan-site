@@ -13,15 +13,15 @@
 - Commit after each variant: `design(kinetic): vN — <name>`. No force-push. No deletes.
 
 ## Phase A — Creative direction  ✅ when all checked
-- [ ] A1. Write this tracker + LOG + REVIEW skeleton
-- [ ] A2. Shared infra `src/app/kinetic/_shared/` (content adapter, KFrame nav/footer, SafeCanvas, section primitives) + `/kinetic` index page + `/kinetic/layout.tsx` metadata
-- [ ] A3. Commit "chore(kinetic): scaffolding + docs"
+- [x] A1. Write this tracker + LOG + REVIEW skeleton
+- [x] A2. Shared infra `src/app/kinetic/_shared/` (content adapter, KFrame nav/footer, SafeCanvas, section primitives) + `/kinetic` index page + `/kinetic/layout.tsx` metadata
+- [x] A3. Commit "chore(kinetic): scaffolding + docs"
 
 ## Phase B — 10 variants (one commit each)
-- [ ] B1. `/kinetic/v1` — Editorial Page Tear (paper cover tears open on scroll → lab beneath; SVG jagged clip-path halves)
-- [ ] B2. `/kinetic/v2` — Fabric / Flag Hero (R3F plane vertex-wave portrait panel; scroll-velocity flutter; SVG turbulence fallback)
-- [ ] B3. `/kinetic/v3` — Particle Explosion → Stack (R3F points: core → explode → reassemble into text/grid formations)
-- [ ] B4. `/kinetic/v4` — Mechanical Lab Core (one persistent object morphs: identity → systems map → pipeline → robot → beacon)
+- [x] B1. `/kinetic/v1` — Editorial Page Tear (paper cover tears open on scroll → lab beneath; SVG jagged clip-path halves)
+- [x] B2. `/kinetic/v2` — Fabric / Flag Hero (R3F plane vertex-wave portrait panel; scroll-velocity flutter; SVG turbulence fallback)
+- [x] B3. `/kinetic/v3` — Particle Explosion → Stack (R3F points: core → explode → reassemble into text/grid formations)
+- [x] B4. `/kinetic/v4` — Mechanical Lab Core (one persistent object morphs: identity → systems map → pipeline → robot → beacon)
 - [ ] B5. `/kinetic/v5` — Editorial Portrait Magazine Cover (type-behind-head masking; cover breaks into proof panels on scroll)
 - [ ] B6. `/kinetic/v6` — Data Pipeline Scroll Machine (SVG spine, packets travel with scroll, stations activate cards)
 - [ ] B7. `/kinetic/v7` — Robot Pet Field Log (Cosmo eyes follow pointer; mood-reactive sticky status; dated log entries)
@@ -41,7 +41,7 @@
 - [ ] D3. Final commit + LOG closeout
 
 ## Phase E — Continuity
-- [ ] E1. `scripts/kinetic-status.sh` (log-only status + next-step printer) + hourly cron
+- [x] E1. `scripts/kinetic-status.sh` (log-only status + next-step printer) + hourly cron
 
 ## Resume protocol (cold session)
 1. `cd /home/pi/krishnamadhan-site && git log --oneline -5` — see last completed step
